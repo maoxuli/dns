@@ -1,0 +1,11 @@
+DNS Resolver
+
+This is part of my hands-on work for my course at The George Washington 
+University. A DNS resolver is designed and implemented with Object-Oriented 
+paradigm. The request and response message of DNS protocol are wrapped as 
+Packet object. Resolver send a request message to DNS server and the result 
+is returned within a response message. Current implementation only parses 
+the resource records with types of A, CNAME, and TXT, although other types 
+of resource records are also returned within response message. 
+
+li@maoxuli.com
