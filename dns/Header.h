@@ -101,6 +101,7 @@ namespace dns
         int m_arcount;
         
         // Memory structure
+	#pragma pack(1)
         struct header_fmt
         {
             uint16_t id;
@@ -109,8 +110,8 @@ namespace dns
             uint16_t ancount;
             uint16_t nscount;
             uint16_t arcount;
-        } __attribute__((__packed__));
-        
+		};
+	#pragma pack()
         // Encode and decode flags
         void flags_dec(unsigned char* buf);
         void flags_enc(unsigned char* buf);

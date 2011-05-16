@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dns">
+      <UniqueIdentifier>{911860c8-d216-43bf-8600-ae28b754d133}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\dns\ARecord.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\CNameRecord.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\Header.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\Name.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\Packet.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\Question.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\Resolver.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\ResourceRecord.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\RRFactory.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dns\TXTRecord.cpp">
+      <Filter>dns</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\dns\ARecord.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\CNameRecord.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\Config.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\Header.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\Name.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\Packet.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\Question.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\Resolver.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\ResourceRecord.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\RRFactory.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dns\TXTRecord.h">
+      <Filter>dns</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

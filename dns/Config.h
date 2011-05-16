@@ -45,7 +45,12 @@
 #include <map>
 
 #if defined(_WIN32)
+#	include <stdint.h>
+#	include <algorithm>
 #   include <process.h>
+#   include <winsock2.h>
+#   include <ws2tcpip.h>
+#   pragma comment(lib, "ws2_32.lib")
 #else
 #   include <pthread.h>
 #   include <errno.h>

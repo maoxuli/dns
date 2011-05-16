@@ -59,13 +59,15 @@ namespace dns
         int m_rdlen;
         
         // Memory structure
+	#pragma pack(1)
         struct Header
         {
             int16_t rtype;
             int16_t rclass;
             int32_t ttl;
             uint16_t rdlen;
-        } __attribute__((__packed__));
+        };
+	#pragma pack()
     };
 }
 

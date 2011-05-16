@@ -75,7 +75,7 @@ bool dns::Name::init(std::string& name)
     {
         //Validate the name first
         std::string sName = name;
-        transform(sName.begin(), sName.end(), sName.begin(), ::tolower);
+        std::transform(sName.begin(), sName.end(), sName.begin(), ::tolower);
         if (sName.size() > 255)
         {
             // Log error of too long name

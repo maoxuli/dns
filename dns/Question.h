@@ -54,11 +54,13 @@ namespace dns
         int m_type;
         int m_class;
         
+	#pragma pack(1)
         struct Header
         {
             int16_t qtype;
             int16_t qclass;
-        } __attribute__((__packed__));
+        };
+	#pragma pack()
     };
 }
 

@@ -38,24 +38,56 @@
 dns::Resolver::Resolver()
 : m_server(DEFAULT_DNS_SERVER)
 {
+#if defined(_WIN32)
+    WORD version = MAKEWORD(1, 1);
+    WSADATA data;
+    if(WSAStartup(version, &data) != 0)
+    {
+        std::cout << "WSAStartup failed.\n";
+    }
+#endif
+
     init();
 }
 
 dns::Resolver::Resolver(std::string& ip)
 : m_server(ip)
 {
+#if defined(_WIN32)
+    WORD version = MAKEWORD(1, 1);
+    WSADATA data;
+    if(WSAStartup(version, &data) != 0)
+    {
+        std::cout << "WSAStartup failed.\n";
+    }
+#endif 
+
     init();
 }
 
 dns::Resolver::Resolver(const char* ip)
 : m_server(ip)
 {
+#if defined(_WIN32)
+    WORD version = MAKEWORD(1, 1);
+    WSADATA data;
+    if(WSAStartup(version, &data) != 0)
+    {
+        std::cout << "WSAStartup failed.\n";
+    }
+#endif 
+
     init();
 }
 
 dns::Resolver::~Resolver()
 {
+#if defined(_WIN32)
+	closesocket(m_socket);
+	WSACleanup();
+#else
     close(m_socket);
+#endif
 }
 
 bool dns::Resolver::init()
@@ -63,11 +95,9 @@ bool dns::Resolver::init()
     m_retries = DEFAULT_RETRIES; 
     
     memset(&m_sin, 0, sizeof(m_sin));
-    if(0 != inet_aton(m_server.c_str(), &m_sin.sin_addr))
-    {
-        m_sin.sin_port = htons(53);
-        m_sin.sin_family = AF_INET;
-    }
+	m_sin.sin_family = AF_INET;
+	m_sin.sin_port = htons(53);
+	m_sin.sin_addr.s_addr = inet_addr(m_server.c_str());
     
     if(-1 == (m_socket = socket(AF_INET, SOCK_DGRAM, 0)))
     {
@@ -148,7 +178,7 @@ bool dns::Resolver::query(dns::Packet& request, dns::Packet& response)
                 continue;
             }
             else if (bSend
-                     && sendto(m_socket, buf, len, 0, (struct sockaddr*)&m_sin, sizeof(m_sin)) <= 0)
+                     && sendto(m_socket, (char*)buf, len, 0, (struct sockaddr*)&m_sin, sizeof(m_sin)) <= 0)
             {
                 std::cout << "Send request packet error" << std::endl;
                 continue;
@@ -171,7 +201,7 @@ bool dns::Resolver::query(dns::Packet& request, dns::Packet& response)
                 else if (FD_ISSET(m_socket, &fds))
                 {
                     memset(buf_in, 0, size_in);
-                    len_in = recvfrom(m_socket, buf_in, size_in, 0, (struct sockaddr*)&sin, &addr_len);
+                    len_in = recvfrom(m_socket, (char*)buf_in, size_in, 0, (struct sockaddr*)&sin, &addr_len);
                     
                     if (len_in <= 0)
                     {
