@@ -1,0 +1,282 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FEE9802A1657F47A005BFD09 /* ARecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980151657F47A005BFD09 /* ARecord.cpp */; };
+		FEE9802B1657F47A005BFD09 /* CNameRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980171657F47A005BFD09 /* CNameRecord.cpp */; };
+		FEE9802C1657F47A005BFD09 /* Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE9801A1657F47A005BFD09 /* Header.cpp */; };
+		FEE9802D1657F47A005BFD09 /* Name.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE9801C1657F47A005BFD09 /* Name.cpp */; };
+		FEE9802E1657F47A005BFD09 /* Packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE9801E1657F47A005BFD09 /* Packet.cpp */; };
+		FEE9802F1657F47A005BFD09 /* Question.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980201657F47A005BFD09 /* Question.cpp */; };
+		FEE980301657F47A005BFD09 /* Resolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980221657F47A005BFD09 /* Resolver.cpp */; };
+		FEE980311657F47A005BFD09 /* ResourceRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980241657F47A005BFD09 /* ResourceRecord.cpp */; };
+		FEE980321657F47A005BFD09 /* RRFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980261657F47A005BFD09 /* RRFactory.cpp */; };
+		FEE980331657F47A005BFD09 /* TXTRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980281657F47A005BFD09 /* TXTRecord.cpp */; };
+		FEE980351657F47A005BFD09 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980341657F47A005BFD09 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FEE97FD11657F47A005BFD09 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FEE97FD31657F47A005BFD09 /* dns */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dns; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEE980151657F47A005BFD09 /* ARecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ARecord.cpp; sourceTree = "<group>"; };
+		FEE980161657F47A005BFD09 /* ARecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARecord.h; sourceTree = "<group>"; };
+		FEE980171657F47A005BFD09 /* CNameRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CNameRecord.cpp; sourceTree = "<group>"; };
+		FEE980181657F47A005BFD09 /* CNameRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNameRecord.h; sourceTree = "<group>"; };
+		FEE980191657F47A005BFD09 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		FEE9801A1657F47A005BFD09 /* Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Header.cpp; sourceTree = "<group>"; };
+		FEE9801B1657F47A005BFD09 /* Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		FEE9801C1657F47A005BFD09 /* Name.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Name.cpp; sourceTree = "<group>"; };
+		FEE9801D1657F47A005BFD09 /* Name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Name.h; sourceTree = "<group>"; };
+		FEE9801E1657F47A005BFD09 /* Packet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Packet.cpp; sourceTree = "<group>"; };
+		FEE9801F1657F47A005BFD09 /* Packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packet.h; sourceTree = "<group>"; };
+		FEE980201657F47A005BFD09 /* Question.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Question.cpp; sourceTree = "<group>"; };
+		FEE980211657F47A005BFD09 /* Question.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Question.h; sourceTree = "<group>"; };
+		FEE980221657F47A005BFD09 /* Resolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resolver.cpp; sourceTree = "<group>"; };
+		FEE980231657F47A005BFD09 /* Resolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resolver.h; sourceTree = "<group>"; };
+		FEE980241657F47A005BFD09 /* ResourceRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceRecord.cpp; sourceTree = "<group>"; };
+		FEE980251657F47A005BFD09 /* ResourceRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceRecord.h; sourceTree = "<group>"; };
+		FEE980261657F47A005BFD09 /* RRFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RRFactory.cpp; sourceTree = "<group>"; };
+		FEE980271657F47A005BFD09 /* RRFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RRFactory.h; sourceTree = "<group>"; };
+		FEE980281657F47A005BFD09 /* TXTRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TXTRecord.cpp; sourceTree = "<group>"; };
+		FEE980291657F47A005BFD09 /* TXTRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTRecord.h; sourceTree = "<group>"; };
+		FEE980341657F47A005BFD09 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FEE97FD01657F47A005BFD09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FEE97FC81657F47A005BFD09 = {
+			isa = PBXGroup;
+			children = (
+				FEE980341657F47A005BFD09 /* main.cpp */,
+				FEE980141657F47A005BFD09 /* dns */,
+				FEE97FD41657F47A005BFD09 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FEE97FD41657F47A005BFD09 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FEE97FD31657F47A005BFD09 /* dns */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEE980141657F47A005BFD09 /* dns */ = {
+			isa = PBXGroup;
+			children = (
+				FEE980151657F47A005BFD09 /* ARecord.cpp */,
+				FEE980161657F47A005BFD09 /* ARecord.h */,
+				FEE980171657F47A005BFD09 /* CNameRecord.cpp */,
+				FEE980181657F47A005BFD09 /* CNameRecord.h */,
+				FEE980191657F47A005BFD09 /* Config.h */,
+				FEE9801A1657F47A005BFD09 /* Header.cpp */,
+				FEE9801B1657F47A005BFD09 /* Header.h */,
+				FEE9801C1657F47A005BFD09 /* Name.cpp */,
+				FEE9801D1657F47A005BFD09 /* Name.h */,
+				FEE9801E1657F47A005BFD09 /* Packet.cpp */,
+				FEE9801F1657F47A005BFD09 /* Packet.h */,
+				FEE980201657F47A005BFD09 /* Question.cpp */,
+				FEE980211657F47A005BFD09 /* Question.h */,
+				FEE980221657F47A005BFD09 /* Resolver.cpp */,
+				FEE980231657F47A005BFD09 /* Resolver.h */,
+				FEE980241657F47A005BFD09 /* ResourceRecord.cpp */,
+				FEE980251657F47A005BFD09 /* ResourceRecord.h */,
+				FEE980261657F47A005BFD09 /* RRFactory.cpp */,
+				FEE980271657F47A005BFD09 /* RRFactory.h */,
+				FEE980281657F47A005BFD09 /* TXTRecord.cpp */,
+				FEE980291657F47A005BFD09 /* TXTRecord.h */,
+			);
+			name = dns;
+			path = ../dns;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FEE97FD21657F47A005BFD09 /* dns */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEE97FDC1657F47A005BFD09 /* Build configuration list for PBXNativeTarget "dns" */;
+			buildPhases = (
+				FEE97FCF1657F47A005BFD09 /* Sources */,
+				FEE97FD01657F47A005BFD09 /* Frameworks */,
+				FEE97FD11657F47A005BFD09 /* CopyFiles */,
+				FEE9804B1657F47A005BFD09 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = dns;
+			productName = dns;
+			productReference = FEE97FD31657F47A005BFD09 /* dns */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FEE97FCA1657F47A005BFD09 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = GWU;
+			};
+			buildConfigurationList = FEE97FCD1657F47A005BFD09 /* Build configuration list for PBXProject "dns" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FEE97FC81657F47A005BFD09;
+			productRefGroup = FEE97FD41657F47A005BFD09 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FEE97FD21657F47A005BFD09 /* dns */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FEE9804B1657F47A005BFD09 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp $CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH $PROJECT_DIR/$EXECUTABLE_PATH";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FEE97FCF1657F47A005BFD09 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEE9802A1657F47A005BFD09 /* ARecord.cpp in Sources */,
+				FEE9802B1657F47A005BFD09 /* CNameRecord.cpp in Sources */,
+				FEE9802C1657F47A005BFD09 /* Header.cpp in Sources */,
+				FEE9802D1657F47A005BFD09 /* Name.cpp in Sources */,
+				FEE9802E1657F47A005BFD09 /* Packet.cpp in Sources */,
+				FEE9802F1657F47A005BFD09 /* Question.cpp in Sources */,
+				FEE980301657F47A005BFD09 /* Resolver.cpp in Sources */,
+				FEE980311657F47A005BFD09 /* ResourceRecord.cpp in Sources */,
+				FEE980321657F47A005BFD09 /* RRFactory.cpp in Sources */,
+				FEE980331657F47A005BFD09 /* TXTRecord.cpp in Sources */,
+				FEE980351657F47A005BFD09 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FEE97FDA1657F47A005BFD09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FEE97FDB1657F47A005BFD09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FEE97FDD1657F47A005BFD09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = ../;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FEE97FDE1657F47A005BFD09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = ../;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FEE97FCD1657F47A005BFD09 /* Build configuration list for PBXProject "dns" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEE97FDA1657F47A005BFD09 /* Debug */,
+				FEE97FDB1657F47A005BFD09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FEE97FDC1657F47A005BFD09 /* Build configuration list for PBXNativeTarget "dns" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEE97FDD1657F47A005BFD09 /* Debug */,
+				FEE97FDE1657F47A005BFD09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FEE97FCA1657F47A005BFD09 /* Project object */;
+}

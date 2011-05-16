@@ -68,9 +68,7 @@ dns::ResourceRecord* dns::ResourceRecord::fromBuffer(unsigned char* buf, size_t 
         //Error log
     }
     else
-    {
-        printf("Decode RR name, offset: %ld \n", offset);
-        
+    {        
         // Answer::Header
         if (size - offset >= sizeof(dns::ResourceRecord::Header))
         {
@@ -81,9 +79,7 @@ dns::ResourceRecord* dns::ResourceRecord::fromBuffer(unsigned char* buf, size_t 
             uint32_t uttl = ntohl(header->ttl);
             int ttl = *(int *)&uttl;
             offset += sizeof(dns::ResourceRecord::Header);
-            
-            printf("Decode RR header, offset: %ld \n", offset);
-            
+                        
             // rdata
             if (size - offset >= rdlen)
             {

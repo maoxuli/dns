@@ -35,15 +35,17 @@
 
 int main (int argc, const char * argv[])
 {
-    std::cout << "DNS test ... \n";
+    std::cout << "DNS test ... \n\n";
     
     dns::Resolver resolver;
     
     dns::Packet response(true);
-    resolver.query("www.openhat.org", DNS_RR_A, response);
+    resolver.query("www.ppengine.com", DNS_RR_A, response);
     std::cout << response.toString();  
     
-    std::cout << "DNS test end! \n";
+    std::cout << "\nDNS test end! \n";
+    std::cout << "Press any key to exit...\n";
+    getchar();
     return 0;
 }
 

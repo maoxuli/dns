@@ -83,7 +83,6 @@ int dns::Header::toBuffer(unsigned char* buf, size_t size)
     {
         header_fmt h;
         h.id = htons(m_id);
-        printf("Request Header::ID %d - %x\n", m_id, h.id);
         h.qdcount = htons(m_qdcount);
         h.ancount = htons(m_ancount);
         h.nscount = htons(m_nscount);
@@ -107,7 +106,6 @@ bool dns::Header::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
 
     header_fmt *h = (header_fmt *)(buf + offset);
     m_id = ntohs(h->id);
-    printf("Response Header::ID %x - %d\n", h->id, m_id);
     m_qdcount = ntohs(h->qdcount);
     m_ancount = ntohs(h->ancount);
     m_nscount = ntohs(h->nscount);
@@ -116,12 +114,12 @@ bool dns::Header::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
     flags_dec((unsigned char*)&h->flags);
     offset += sizeof(header_fmt);
         
-    printf("Decoding header: \n");
-    printf("id: %x\n", h->id);
-    printf("flags: %x\n", h->flags);
-    printf("qdcount: %x\n", h->qdcount);
-    printf("ancount: %x\n", h->ancount);
-    printf("arcount: %x\n", h->arcount);
+    //printf("Decoding header: \n");
+    //printf("id: %x\n", h->id);
+    //printf("flags: %x\n", h->flags);
+    //printf("qdcount: %x\n", h->qdcount);
+    //printf("ancount: %x\n", h->ancount);
+    //printf("arcount: %x\n", h->arcount);
     
     return true;
 }
@@ -171,7 +169,7 @@ std::string dns::Header::toString()
     }
     
     oss << m_id << " " << m_qdcount << " " << m_ancount << " " << m_nscount << " " << m_arcount;
-    
+        
     return oss.str();
 }
 

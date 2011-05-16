@@ -97,9 +97,7 @@ int dns::Packet::toBuffer(unsigned char *buf, size_t size)
         std::cout << "Encoding header error." << std::endl;
     }
     else
-    {
-        printf("Encoding header, length: %d \n", nRet);
-        
+    {        
         size -= nRet;
         buf += nRet;    
     
@@ -113,15 +111,12 @@ int dns::Packet::toBuffer(unsigned char *buf, size_t size)
                 std::cout << "Encoding question error. " << std::endl; 
             }
             else
-            {
-                printf("Encoding question, length: %d \n", nLen);
-                
+            {                
                 nRet += nLen;
             }
         }
     }
     
-    printf("Encoding request packet, length: %d \n", nRet);
     return nRet;
 }
 
@@ -145,7 +140,6 @@ bool dns::Packet::fromBuffer(unsigned char* buf, size_t size)
     else
     {
         // Question and answers pointer is relative to the end of header
-        std::cout << "Decode header, offset: " << offset << std::endl;
         clearList();
         
         // questions
@@ -159,7 +153,6 @@ bool dns::Packet::fromBuffer(unsigned char* buf, size_t size)
             }
             else
             {
-                std::cout << "Decode question, offset: " << offset << std::endl;
                 m_questions.push_back(question);
             }
         }
@@ -175,7 +168,6 @@ bool dns::Packet::fromBuffer(unsigned char* buf, size_t size)
             }
             else
             {
-                std::cout << "Decode answer, offset: " << offset << std::endl;
                 m_answers.push_back(rr);
             }
         }

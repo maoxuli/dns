@@ -113,16 +113,16 @@ bool dns::Resolver::query(dns::Packet& request, dns::Packet& response)
     }
     else
     {
-        printf("Reuqest packet, len: %d \n", len);
-        printf("id: %x %x \n", buf[0], buf[1]);
-        printf("flags: %x %x \n", buf[2], buf[3]);
-        printf("qdcount: %x %x \n", buf[4], buf[5]);
-        printf("ancount: %x %x \n", buf[6], buf[7]);
-        printf("nscount: %x %x \n", buf[8], buf[9]);
-        printf("arcount: %x %x \n", buf[10], buf[11]);
-        printf("name: ... \n");
-        printf("type: %x %x \n", buf[len-4], buf[len-3]);
-        printf("class: %x %x \n", buf[len-2], buf[len-1]);
+        //printf("Request packet, len: %d \n", len);
+        //printf("id: %x %x \n", buf[0], buf[1]);
+        //printf("flags: %x %x \n", buf[2], buf[3]);
+        //printf("qdcount: %x %x \n", buf[4], buf[5]);
+        //printf("ancount: %x %x \n", buf[6], buf[7]);
+        //printf("nscount: %x %x \n", buf[8], buf[9]);
+        //printf("arcount: %x %x \n", buf[10], buf[11]);
+        //printf("name: ... \n");
+        //printf("type: %x %x \n", buf[len-4], buf[len-3]);
+        //printf("class: %x %x \n", buf[len-2], buf[len-1]);
                 
         // Receiving packet
         struct sockaddr_in sin;
@@ -172,7 +172,6 @@ bool dns::Resolver::query(dns::Packet& request, dns::Packet& response)
                 {
                     memset(buf_in, 0, size_in);
                     len_in = recvfrom(m_socket, buf_in, size_in, 0, (struct sockaddr*)&sin, &addr_len);
-                    printf("Receive data len_in: %ld \n", len_in);
                     
                     if (len_in <= 0)
                     {
