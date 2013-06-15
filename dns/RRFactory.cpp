@@ -34,6 +34,7 @@
 #include "ARecord.h"
 #include "CNameRecord.h"
 #include "TXTRecord.h"
+#include "MXRecord.h"
 
 dns::RRFactory* dns::RRFactory::m_instance = NULL;
 
@@ -69,6 +70,9 @@ dns::ResourceRecord* dns::RRFactory::create(dns::Name& name, int rtype, int rcla
             break;
         case DNS_RR_TXT: // TXT value record
             return new TXTRecord(name, rclass, ttl, rdlen);
+            break;
+        case DNS_RR_MX: // MX record
+            return new MXRecord(name, rclass, ttl, rdlen);
             break;
             
         default:

@@ -1,4 +1,3 @@
-
 // ***************************************************************************
 //
 // Copyright (c) 2010, MAOXU LI. All rights reserved.
@@ -26,27 +25,44 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// http://www.ppengine.com
-// support@ppengine.com
+// li@maoxuli.com
 //
 // ***************************************************************************
 
-#include <dns/Resolver.h>
-#include <iostream>
+#include "MXRecord.h"
 
-int main (int argc, const char * argv[])
+dns::MXRecord::MXRecord(dns::Name& name, int rclass, int ttl, int rdlen)
+: ResourceRecord(name, DNS_RR_CNAME, rclass, ttl, rdlen)
 {
-    std::cout << "DNS test ... \n\n";
     
-    dns::Resolver resolver;
-    
-    dns::Packet response(true);
-    resolver.query("ucdmc.ucdavis.edu", DNS_RR_MX, response);
-    std::cout << response.toString();  
-    
-    std::cout << "\nDNS test end! \n";
-    //std::cout << "Press any key to exit...\n";
-    //getchar();
-    return 0;
 }
 
+dns::MXRecord::~MXRecord()
+{
+    
+}
+
+// Parse RDATA of CName record
+// RDATA is the A name refered by the alias
+bool dns::MXRecord::parse(unsigned char* buf, size_t size, size_t& offset)
+{
+    m_priority = *(uint16_t*)(buf + offset); // ?
+    offset += 2;
+    return m_aname.fromBuffer(buf, size, offset);
+}
+
+std::string dns::MXRecord::toString()
+{
+    std::ostringstream oss;
+    
+    // Resource Record header
+    oss << dns::ResourceRecord::toString() << " ";
+    
+    // Priority
+    oss << m_priority << " ";
+    
+    // A name
+    oss << m_aname.toString();
+    
+    return oss.str();
+}

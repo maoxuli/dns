@@ -1,4 +1,3 @@
-
 // ***************************************************************************
 //
 // Copyright (c) 2010, MAOXU LI. All rights reserved.
@@ -26,27 +25,38 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// http://www.ppengine.com
-// support@ppengine.com
+// li@maoxuli.com
 //
 // ***************************************************************************
 
-#include <dns/Resolver.h>
-#include <iostream>
+#ifndef DNS_MX_RECORD_H
+#define DNS_MX_RECORD_H
 
-int main (int argc, const char * argv[])
+#include <dns/Config.h>
+#include <dns/ResourceRecord.h>
+#include <dns/Name.h>
+
+namespace dns
 {
-    std::cout << "DNS test ... \n\n";
-    
-    dns::Resolver resolver;
-    
-    dns::Packet response(true);
-    resolver.query("ucdmc.ucdavis.edu", DNS_RR_MX, response);
-    std::cout << response.toString();  
-    
-    std::cout << "\nDNS test end! \n";
-    //std::cout << "Press any key to exit...\n";
-    //getchar();
-    return 0;
+    class MXRecord : public ResourceRecord
+    {
+    public:
+        MXRecord(dns::Name& name, int rclass, int ttl, int rdlen);
+        virtual ~MXRecord();
+        
+        // Parse RDATA of CName record
+        virtual bool parse(unsigned char* buf, size_t size, size_t& offset);
+        
+        virtual std::string toString();
+        
+    private:
+        // RDATA
+        // 16 bits integer for preperence
+        int m_priority;
+        
+        // A name
+        dns::Name m_aname;
+    };
 }
 
+#endif

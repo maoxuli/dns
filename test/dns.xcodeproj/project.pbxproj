@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE0FD2131762F6EC0015385C /* MXRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0FD2111762F6EC0015385C /* MXRecord.cpp */; };
 		FEE9802A1657F47A005BFD09 /* ARecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980151657F47A005BFD09 /* ARecord.cpp */; };
 		FEE9802B1657F47A005BFD09 /* CNameRecord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE980171657F47A005BFD09 /* CNameRecord.cpp */; };
 		FEE9802C1657F47A005BFD09 /* Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE9801A1657F47A005BFD09 /* Header.cpp */; };
@@ -33,6 +34,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FE0FD2111762F6EC0015385C /* MXRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MXRecord.cpp; sourceTree = "<group>"; };
+		FE0FD2121762F6EC0015385C /* MXRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXRecord.h; sourceTree = "<group>"; };
 		FEE97FD31657F47A005BFD09 /* dns */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dns; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEE980151657F47A005BFD09 /* ARecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ARecord.cpp; sourceTree = "<group>"; };
 		FEE980161657F47A005BFD09 /* ARecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARecord.h; sourceTree = "<group>"; };
@@ -89,6 +92,8 @@
 		FEE980141657F47A005BFD09 /* dns */ = {
 			isa = PBXGroup;
 			children = (
+				FE0FD2111762F6EC0015385C /* MXRecord.cpp */,
+				FE0FD2121762F6EC0015385C /* MXRecord.h */,
 				FEE980151657F47A005BFD09 /* ARecord.cpp */,
 				FEE980161657F47A005BFD09 /* ARecord.h */,
 				FEE980171657F47A005BFD09 /* CNameRecord.cpp */,
@@ -193,6 +198,7 @@
 				FEE980321657F47A005BFD09 /* RRFactory.cpp in Sources */,
 				FEE980331657F47A005BFD09 /* TXTRecord.cpp in Sources */,
 				FEE980351657F47A005BFD09 /* main.cpp in Sources */,
+				FE0FD2131762F6EC0015385C /* MXRecord.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
