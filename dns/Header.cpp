@@ -44,7 +44,7 @@ dns::Header::Header(bool bResponse)
     if (!bResponse) 
     {
         // Create ID
-        assignID();
+        assignID(345);
         
         // Recursive request
         m_flags.rd = 1;
@@ -57,11 +57,11 @@ dns::Header::~Header()
 }
 
 // Set ID or create a random ID 
-int dns::Header::assignID(int id /*= -1*/)
+unsigned short dns::Header::assignID(unsigned short id /*= -1*/)
 {
-    if (id < 0)
+    if (id == 0)
     {
-        m_id = (int)(65536 * (rand() / (RAND_MAX + 1.0)));
+        m_id = (unsigned short)(65535 * (rand() / (RAND_MAX + 1.0)));
     }
     else
     {
@@ -73,46 +73,41 @@ int dns::Header::assignID(int id /*= -1*/)
 
 int dns::Header::toBuffer(unsigned char* buf, size_t size)
 {
-    int nLen = -1;
-
-    if (size < sizeof(header_fmt))
+    if (size >= HEADER_LENGTH)
     {
-        //Error log
-    }
-    else
-    {
-        header_fmt h;
-        h.id = htons(m_id);
-        h.qdcount = htons(m_qdcount);
-        h.ancount = htons(m_ancount);
-        h.nscount = htons(m_nscount);
-        h.arcount = htons(m_arcount);
-        flags_enc((unsigned char*)&h.flags);
+        unsigned short flags = 0;
+        flags_enc((unsigned char*)&flags);
         
-        nLen = sizeof(h);
-        memcpy(buf, &h, nLen);
+        uint16_t* p = (uint16_t*)buf;
+        *(p++) = htons(m_id);
+        *(p++) = htons(flags);
+        *(p++) = htons(m_qdcount);
+        *(p++) = htons(m_ancount);
+        *(p++) = htons(m_nscount);
+        *(p++) = htons(m_arcount);
+        return HEADER_LENGTH;
     }
-        
-    return nLen;
+    return -1;
 }
 
 bool dns::Header::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
-    if((size - offset) < sizeof(header_fmt))
+    if((size - offset) < HEADER_LENGTH)
     {
         std::cout << "Buffer is too small to decode header" << std::endl;
         return false;
     }
 
-    header_fmt *h = (header_fmt *)(buf + offset);
-    m_id = ntohs(h->id);
-    m_qdcount = ntohs(h->qdcount);
-    m_ancount = ntohs(h->ancount);
-    m_nscount = ntohs(h->nscount);
-    m_arcount = ntohs(h->arcount);
+    uint16_t* p = (uint16_t*)(buf + offset);
+    m_id = ntohs(*(p++));
+    uint16_t flags = ntohs(*(p++));
+    m_qdcount = ntohs(*(p++));
+    m_ancount = ntohs(*(p++));
+    m_nscount = ntohs(*(p++));
+    m_arcount = ntohs(*(p++));
+    offset += HEADER_LENGTH;
     
-    flags_dec((unsigned char*)&h->flags);
-    offset += sizeof(header_fmt);
+    flags_dec((unsigned char*)&flags);
         
     //printf("Decoding header: \n");
     //printf("id: %x\n", h->id);

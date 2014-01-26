@@ -31,8 +31,8 @@
 
 #include "TXTRecord.h"
 
-dns::TXTRecord::TXTRecord(dns::Name& name, int rclass, int ttl, int rdlen)
-: ResourceRecord(name, DNS_RR_TXT, rclass, ttl, rdlen)
+dns::TXTRecord::TXTRecord()
+: ResourceRecord(DNS_RR_TXT)
 {
     
 }
@@ -40,22 +40,6 @@ dns::TXTRecord::TXTRecord(dns::Name& name, int rclass, int ttl, int rdlen)
 dns::TXTRecord::~TXTRecord()
 {
     
-}
-
-// Parse RDATA of TXT record
-// Text is a sequence of [count+characters]
-bool dns::TXTRecord::parse(unsigned char* buf, size_t size, size_t& offset)
-{    
-    size_t start = offset;
-    int count = 0;
-    while (offset - start < m_rdlen)
-    {
-        count = (uint8_t) buf[offset++];
-        m_text.append((char*) &(buf[offset]), (int)count);
-        offset += count;
-    }
-    
-    return true;
 }
 
 std::string dns::TXTRecord::toString()
@@ -69,4 +53,20 @@ std::string dns::TXTRecord::toString()
     oss << m_text;
     
     return oss.str();
+}
+
+// Parse RDATA of TXT record
+// Text is a sequence of [count+characters]
+bool dns::TXTRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+{
+    size_t start = offset;
+    int count = 0;
+    while (offset - start < m_rdlen)
+    {
+        count = (uint8_t) buf[offset++];
+        m_text.append((char*) &(buf[offset]), (int)count);
+        offset += count;
+    }
+    
+    return true;
 }

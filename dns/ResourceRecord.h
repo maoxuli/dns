@@ -40,34 +40,24 @@ namespace dns
     class ResourceRecord 
     {
     public:
-        ResourceRecord(dns::Name& name, int rtype, int rclass, int ttl, int rdlen);
+        ResourceRecord(unsigned short rtype, unsigned short rdlen = 0);
         virtual ~ResourceRecord();
         
-        static ResourceRecord* fromBuffer(unsigned char* buf, size_t size, size_t& offset);
-        
-        // Parse RDATA of Resource Record
-        // Implemented in sub class
-        virtual bool parse(unsigned char* buf, size_t size, size_t& offset);
-        
+        bool fromBuffer(unsigned char* buf, size_t size, size_t& offset);
+ 
         virtual std::string toString();
+        
+        static unsigned short checkType(unsigned char* buf, size_t size, size_t offset);
                         
     protected:
-        dns::Name m_name;
-        int m_type;
-        int m_class;
-        int m_ttl;
-        int m_rdlen;
-        
-        // Memory structure
-	#pragma pack(1)
-        struct Header
-        {
-            int16_t rtype;
-            int16_t rclass;
-            int32_t ttl;
-            uint16_t rdlen;
-        };
-	#pragma pack()
+        Name m_name;
+        unsigned short m_type;
+        unsigned short m_class;
+        unsigned int m_ttl;
+        unsigned short m_rdlen;
+
+        // Pack and unpack RDATA, redefined by derived class
+        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
     };
 }
 

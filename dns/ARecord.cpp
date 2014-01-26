@@ -31,23 +31,15 @@
 
 #include "ARecord.h"
  
-dns::ARecord::ARecord(dns::Name& name, int rclass, int ttl, int rdlen)
-: ResourceRecord(name, DNS_RR_A, rclass, ttl, rdlen)
+dns::ARecord::ARecord()
+: ResourceRecord(DNS_RR_A)
 {
-    assert(rdlen == 4);
+
 }
 
 dns::ARecord::~ARecord()
 {
     
-}
-
-// Parse RDATA of A record
-// RDATA is 4-bytes value of IPv4 address 
-bool dns::ARecord::parse(unsigned char* buf, size_t size, size_t& offset)
-{
-    m_ip = ntohl(*(uint32_t *)(buf+offset));
-    return true;
 }
 
 std::string dns::ARecord::toString()
@@ -58,7 +50,23 @@ std::string dns::ARecord::toString()
     oss << dns::ResourceRecord::toString() << " ";
     
     // IPv4 address of A record
-    oss << ((m_ip >> 24) & 0xff) << "." << ((m_ip >> 16) & 0xff) << "." << ((m_ip >> 8) & 0xff) << "." << (m_ip & 0xff);
+    struct in_addr ia = {m_ip};
+    std::string ip = inet_ntoa(ia);
+    oss << ip;
+    //oss << ((m_ip >> 24) & 0xff) << "." << ((m_ip >> 16) & 0xff) << "." << ((m_ip >> 8) & 0xff) << "." << (m_ip & 0xff);
     
     return oss.str();
 }
+
+// Parse RDATA of A record
+// RDATA is 4-bytes value of IPv4 address 
+bool dns::ARecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+{
+    if(size - offset >= 4)
+    {
+        m_ip = ntohl(*(uint32_t *)(buf+offset));
+        return true;
+    }
+    return false;
+}
+

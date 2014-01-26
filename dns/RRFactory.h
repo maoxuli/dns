@@ -41,31 +41,7 @@ namespace  dns
     class RRFactory
     {
     public:
-        virtual ~RRFactory();
-        static RRFactory* instance();
-        
-        // Create RR object with rtype
-        ResourceRecord* create(dns::Name& name, int rtype, int rclass, int ttl, int rdlen);
-        
-    private:
-        RRFactory();
-        static RRFactory* m_instance;
-        
-        // Helper class to delete singleton instance
-        class Deleter
-        {
-        public:
-            Deleter() {};
-            ~Deleter()
-            {
-                if(RRFactory::m_instance != NULL)
-                {
-                    delete RRFactory::m_instance;
-                }
-            }
-        };
-        friend class Deleter;
-        static Deleter m_deleter;
+        static ResourceRecord* fromBuffer(unsigned char* buf, size_t size, size_t& offset);
     };
 }
 

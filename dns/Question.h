@@ -40,27 +40,19 @@ namespace dns
     class Question 
     {
     public:
-        Question(std::string& qname, int qtype);
-        Question(dns::Name& qname, int qtype, int qclass);
+        Question(std::string& qname, unsigned short qtype);
+        Question(dns::Name& qname, unsigned short qtype, unsigned short qclass);
         virtual ~Question();
+        
+        std::string toString();
         
         int toBuffer(unsigned char *buf, size_t size);
         static Question* fromBuffer(unsigned char* buf, size_t size, size_t& offset);
         
-        std::string toString();
-        
     private:
         dns::Name m_name;
-        int m_type;
-        int m_class;
-        
-	#pragma pack(1)
-        struct Header
-        {
-            int16_t qtype;
-            int16_t qclass;
-        };
-	#pragma pack()
+        unsigned short m_type;
+        unsigned short m_class;
     };
 }
 

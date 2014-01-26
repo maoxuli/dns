@@ -40,17 +40,16 @@ namespace dns
     class TXTRecord : public ResourceRecord 
     {
     public:
-        TXTRecord(dns::Name& name, int rclass, int ttl, int rdlen);
+        TXTRecord();
         virtual ~TXTRecord();
-        
-        // Parse RDATA of TXT record
-        virtual bool parse(unsigned char* buf, size_t size, size_t& offset);
-        
+ 
         virtual std::string toString();
         
     private:
         // Text value of TEXT record
         std::string m_text;
+        
+        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
     };
 }
 

@@ -41,21 +41,21 @@ namespace dns
     class MXRecord : public ResourceRecord
     {
     public:
-        MXRecord(dns::Name& name, int rclass, int ttl, int rdlen);
+        MXRecord();
         virtual ~MXRecord();
         
         // Parse RDATA of CName record
-        virtual bool parse(unsigned char* buf, size_t size, size_t& offset);
-        
         virtual std::string toString();
         
     private:
         // RDATA
         // 16 bits integer for preperence
-        int m_priority;
+        unsigned short m_priority;
         
         // A name
-        dns::Name m_aname;
+        Name m_aname;
+        
+        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
     };
 }
 

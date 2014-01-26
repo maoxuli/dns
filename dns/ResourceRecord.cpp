@@ -32,77 +32,68 @@
 #include "ResourceRecord.h"
 #include "RRFactory.h"
 
-dns::ResourceRecord::ResourceRecord(dns::Name& name, int rtype, int rclass, int ttl, int rdlen)
-: m_name(name)
-, m_type(rtype)
-, m_class(rclass)
-, m_ttl(ttl)
-, m_rdlen(rdlen)
+namespace dns
 {
-    
-}
 
-dns::ResourceRecord::~ResourceRecord()
-{
-    
-}
-
-// General Resource Record class does not parse RDATA
-// Sub class will do it
-bool dns::ResourceRecord::parse(unsigned char* buf, size_t size, size_t& offset)
-{
-    return true;
-}
-
-// From buffer
-dns::ResourceRecord* dns::ResourceRecord::fromBuffer(unsigned char* buf, size_t size, size_t &offset)
-{
-    dns::ResourceRecord* rr = NULL;
-    
-    //Parse name first
-    dns::Name name;
-    
-    if (!name.fromBuffer(buf, size, offset))
+    ResourceRecord::ResourceRecord(unsigned short rtype, unsigned short rdlen)
+    : m_type(rtype)
+    , m_class(0)
+    , m_ttl(0)
+    , m_rdlen(rdlen)
     {
-        std::cout << "Decode name error, offset: %d " << offset << std::endl;
-        //Error log
+        
     }
-    else
-    {        
-        // Answer::Header
-        if (size - offset >= sizeof(dns::ResourceRecord::Header))
-        {
-            dns::ResourceRecord::Header* header = (dns::ResourceRecord::Header*)(buf + offset);
-            int rtype = ntohs(header->rtype);
-            int rclass = ntohs(header->rclass);
-            int rdlen = ntohs(header->rdlen);
-            uint32_t uttl = ntohl(header->ttl);
-            int ttl = *(int *)&uttl;
-            offset += sizeof(dns::ResourceRecord::Header);
-                        
-            // rdata
-            if (size - offset >= rdlen)
+    
+    ResourceRecord::~ResourceRecord()
+    {
+        
+    }
+
+    std::string ResourceRecord::toString()
+    {
+        std::ostringstream oss;
+        oss << "RR: " << m_name.toString() << " " << m_type << " " << m_class << " " << m_ttl << " " << m_rdlen;
+        return oss.str();
+    }
+    
+    unsigned short ResourceRecord::checkType(unsigned char *buf, size_t size, size_t offset)
+    {
+        Name name;
+        name.fromBuffer(buf, size, offset);
+        return ntohs(*(uint16_t*)(buf + offset));
+    }
+    
+    // From buffer
+    bool ResourceRecord::fromBuffer(unsigned char* buf, size_t size, size_t &offset)
+    {
+        // Header 
+        if (m_name.fromBuffer(buf, size, offset))
+        {       
+            if (size - offset >= 10)
             {
-                rr = dns::RRFactory::instance()->create(name, rtype, rclass, ttl, rdlen);
-                if(rr != NULL)
-                {
-                    if(!rr->parse(buf, size, offset))
-                    {
-                        delete rr;
-                        rr = NULL;
-                    }
-                }
+                m_type = ntohs(*(uint16_t*)(buf + offset));
+                offset += 2;
+                m_class = ntohs(*(uint16_t*)(buf + offset));
+                offset += 2;
+                m_ttl = ntohl(*(uint32_t*)(buf + offset));
+                offset += 4;
+                m_rdlen = ntohs(*(uint16_t*)(buf + offset));
+                offset += 2;
+
+                return dataFromBuffer(buf, size, offset);
             }
         }
+        return false;
     }
-    
-    return rr;
-}
 
-std::string dns::ResourceRecord::toString()
-{
-    std::ostringstream oss;
-    oss << "RR: " << m_name.toString() << " " << m_type << " " << m_class << " " << m_ttl << " " << m_rdlen;
-    
-    return oss.str();
+    bool ResourceRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t &offset)
+    {
+        if(size - offset >= m_rdlen)
+        {
+            offset += m_rdlen;
+            return true;
+        }
+        return false;
+    }
+
 }

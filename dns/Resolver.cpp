@@ -31,7 +31,7 @@
 
 #include "Resolver.h"
 
-#define DEFAULT_DNS_SERVER  "192.168.1.1"
+#define DEFAULT_DNS_SERVER  "8.8.8.8"
 #define DEFAULT_RETRIES     10
 #define DNS_MAX_PACKET_SIZE 512
 

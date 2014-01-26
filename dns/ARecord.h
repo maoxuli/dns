@@ -40,17 +40,16 @@ namespace dns
     class ARecord : public ResourceRecord
     {
     public:
-        ARecord(dns::Name& name, int rclass, int ttl, int rdlen);
+        ARecord();
         virtual ~ARecord();
-        
-        // Parse RDATA of A record
-        virtual bool parse(unsigned char* buf, size_t size, size_t& offset);
-        
+ 
         virtual std::string toString();
         
     private:
         // RDATA of A record is a IPv4 address
         uint32_t m_ip;
+        
+        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
     };
 }
 

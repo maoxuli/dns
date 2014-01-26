@@ -41,17 +41,16 @@ namespace dns
     class CNameRecord : public ResourceRecord 
     {
     public:
-        CNameRecord(dns::Name& name, int rclass, int ttl, int rdlen);
+        CNameRecord();
         virtual ~CNameRecord();
-        
-        // Parse RDATA of CName record
-        virtual bool parse(unsigned char* buf, size_t size, size_t& offset);
         
         virtual std::string toString();
         
     private:
         // RDATA is the A name refered by the alias
         dns::Name m_aname;
+        
+        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
     };
 }
 

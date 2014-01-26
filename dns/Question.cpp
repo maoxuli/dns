@@ -31,7 +31,7 @@
 
 #include "Question.h"
 
-dns::Question::Question(std::string& qname, int qtype)
+dns::Question::Question(std::string& qname, unsigned short qtype)
 : m_name(qname)
 , m_type(qtype)
 , m_class(DNS_CLASS_IN)
@@ -39,7 +39,7 @@ dns::Question::Question(std::string& qname, int qtype)
 
 }
 
-dns::Question::Question(dns::Name& qname, int qtype, int qclass)
+dns::Question::Question(dns::Name& qname, unsigned short qtype, unsigned short qclass)
 : m_name(qname)
 , m_type(qtype)
 , m_class(qclass)
@@ -50,6 +50,14 @@ dns::Question::Question(dns::Name& qname, int qtype, int qclass)
 dns::Question::~Question()
 {
     
+}
+
+std::string dns::Question::toString()
+{
+    std::ostringstream oss;
+    oss << "Question: " << m_name.toString() << " " << m_type << " " << m_class;
+    
+    return oss.str();
 }
 
 int dns::Question::toBuffer(unsigned char *buf, size_t size)
@@ -65,13 +73,10 @@ int dns::Question::toBuffer(unsigned char *buf, size_t size)
     else
     {
         // Copy type and class
-        dns::Question::Header header;
-        header.qtype = htons(m_type);
-        header.qclass = htons(m_class);
-        
-        int nHeader = sizeof(header);
-        memcpy(buf+nLen, &header, nHeader);
-        nLen += nHeader;
+        *(uint16_t*)(buf + nLen) = htons(m_type);
+        nLen += 2;
+        *(uint16_t*)(buf + nLen) = htons(m_class);
+        nLen += 2;
     }
     
     return nLen;
@@ -91,13 +96,13 @@ dns::Question* dns::Question::fromBuffer(unsigned char* buf, size_t size, size_t
     else
     {
         // type and class
-        if (size - offset >= sizeof(dns::Question::Header))
+        if (size - offset >= 4)
         {
-            dns::Question::Header* header = (dns::Question::Header*)(buf + offset);
-            int qtype = ntohs(header->qtype);
-            int qclass = ntohs(header->qclass);
-            offset += sizeof(dns::Question::Header);
-            
+            unsigned short qtype = ntohs(*(uint16_t*)(buf + offset));
+            offset += 2;
+            unsigned short qclass = ntohs(*(uint16_t*)(buf + offset));
+            offset += 2;
+
             question = new dns::Question(name, qtype, qclass);
         }
     }
@@ -105,12 +110,5 @@ dns::Question* dns::Question::fromBuffer(unsigned char* buf, size_t size, size_t
     return question;
 }
 
-std::string dns::Question::toString()
-{
-    std::ostringstream oss;
-    oss << "Question: " << m_name.toString() << " " << m_type << " " << m_class;
-    
-    return oss.str();
-}
 
 

@@ -36,48 +36,33 @@
 #include "TXTRecord.h"
 #include "MXRecord.h"
 
-dns::RRFactory* dns::RRFactory::m_instance = NULL;
-
-dns::RRFactory::RRFactory()
+namespace dns
 {
-    
-}
-
-dns::RRFactory::~RRFactory()
-{
-    
-}
-
-dns::RRFactory* dns::RRFactory::instance()
-{
-    if(m_instance == NULL)
+    ResourceRecord* RRFactory::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
     {
-        m_instance = new dns::RRFactory();
+        ResourceRecord* rr = NULL;
+        unsigned short rtype = ResourceRecord::checkType(buf, size, offset);
+        switch (rtype) 
+        {
+            case DNS_RR_A: // A record
+                rr = new ARecord();
+                break;
+            case DNS_RR_CNAME: // CNAME record
+                rr = new CNameRecord();
+                break;
+            case DNS_RR_TXT: // TXT value record
+                rr = new TXTRecord();
+                break;
+            case DNS_RR_MX: // MX record
+                rr = new MXRecord();
+                break;
+                
+            default:
+                rr = new ResourceRecord(rtype);
+                break;
+        }
+        assert(rr != NULL);
+        rr->fromBuffer(buf, size, offset);
+        return rr;
     }
-    
-    return m_instance;
-}
-
-dns::ResourceRecord* dns::RRFactory::create(dns::Name& name, int rtype, int rclass, int ttl, int rdlen)
-{
-    switch (rtype) 
-    {
-        case DNS_RR_A: // A record
-            return new ARecord(name, rclass, ttl, rdlen);
-            break;
-        case DNS_RR_CNAME: // CNAME record
-            return new CNameRecord(name, rclass, ttl, rdlen);
-            break;
-        case DNS_RR_TXT: // TXT value record
-            return new TXTRecord(name, rclass, ttl, rdlen);
-            break;
-        case DNS_RR_MX: // MX record
-            return new MXRecord(name, rclass, ttl, rdlen);
-            break;
-            
-        default:
-            return new ResourceRecord(name, rtype, rclass, ttl, rdlen);
-            break;
-    }
-    return NULL;
 }

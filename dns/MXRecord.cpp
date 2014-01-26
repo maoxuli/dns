@@ -31,8 +31,8 @@
 
 #include "MXRecord.h"
 
-dns::MXRecord::MXRecord(dns::Name& name, int rclass, int ttl, int rdlen)
-: ResourceRecord(name, DNS_RR_CNAME, rclass, ttl, rdlen)
+dns::MXRecord::MXRecord()
+: ResourceRecord(DNS_RR_CNAME)
 {
     
 }
@@ -40,15 +40,6 @@ dns::MXRecord::MXRecord(dns::Name& name, int rclass, int ttl, int rdlen)
 dns::MXRecord::~MXRecord()
 {
     
-}
-
-// Parse RDATA of CName record
-// RDATA is the A name refered by the alias
-bool dns::MXRecord::parse(unsigned char* buf, size_t size, size_t& offset)
-{
-    m_priority = *(uint16_t*)(buf + offset); // ?
-    offset += 2;
-    return m_aname.fromBuffer(buf, size, offset);
 }
 
 std::string dns::MXRecord::toString()
@@ -65,4 +56,16 @@ std::string dns::MXRecord::toString()
     oss << m_aname.toString();
     
     return oss.str();
+}
+
+// Parse RDATA of CName record
+// RDATA is the A name refered by the alias
+bool dns::MXRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+{
+    if(size - offset >= 2)
+    {
+        m_priority = *(uint16_t*)(buf + offset); // ?
+        offset += 2;
+    }
+    return m_aname.fromBuffer(buf, size, offset);
 }

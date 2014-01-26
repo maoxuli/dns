@@ -34,6 +34,8 @@
 
 #include <dns/Config.h>
 
+#define HEADER_LENGTH 12
+
 namespace dns 
 {
     class Header 
@@ -47,8 +49,8 @@ namespace dns
         std::string toString();
         
         // ID field
-        int assignID(int id = -1);
-        inline int id() { return m_id; }
+        unsigned short assignID(unsigned short id = 0);
+        inline unsigned short id() { return m_id; }
         
         // Questions and RR counts
         inline void qdinc() { ++m_qdcount; }
@@ -77,7 +79,12 @@ namespace dns
                          
     private:
         // ID 
-        int m_id;
+        unsigned short m_id;
+        unsigned short m_flag;
+        unsigned short m_qdcount;
+        unsigned short m_ancount;
+        unsigned short m_nscount;
+        unsigned short m_arcount;
 
         // Flags
         struct {
@@ -94,24 +101,6 @@ namespace dns
             RCODE rcode;
         } m_flags;
         
-        // Counts
-        int m_qdcount;
-        int m_ancount;
-        int m_nscount;
-        int m_arcount;
-        
-        // Memory structure
-	#pragma pack(1)
-        struct header_fmt
-        {
-            uint16_t id;
-            uint16_t flags;
-            uint16_t qdcount;
-            uint16_t ancount;
-            uint16_t nscount;
-            uint16_t arcount;
-		};
-	#pragma pack()
         // Encode and decode flags
         void flags_dec(unsigned char* buf);
         void flags_enc(unsigned char* buf);

@@ -41,7 +41,7 @@ int main (int argc, const char * argv[])
     dns::Resolver resolver;
     
     dns::Packet response(true);
-    resolver.query("ucdmc.ucdavis.edu", DNS_RR_MX, response);
+    resolver.query("www.ucdavis.edu", DNS_RR_CNAME, response);
     std::cout << response.toString();  
     
     std::cout << "\nDNS test end! \n";

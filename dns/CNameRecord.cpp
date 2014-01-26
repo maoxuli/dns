@@ -31,8 +31,8 @@
 
 #include "CNameRecord.h"
 
-dns::CNameRecord::CNameRecord(dns::Name& name, int rclass, int ttl, int rdlen)
-: ResourceRecord(name, DNS_RR_CNAME, rclass, ttl, rdlen)
+dns::CNameRecord::CNameRecord()
+: ResourceRecord(DNS_RR_CNAME)
 {
     
 }
@@ -40,13 +40,6 @@ dns::CNameRecord::CNameRecord(dns::Name& name, int rclass, int ttl, int rdlen)
 dns::CNameRecord::~CNameRecord()
 {
     
-}
-
-// Parse RDATA of CName record
-// RDATA is the A name refered by the alias
-bool dns::CNameRecord::parse(unsigned char* buf, size_t size, size_t& offset)
-{    
-    return m_aname.fromBuffer(buf, size, offset);
 }
 
 std::string dns::CNameRecord::toString()
@@ -60,4 +53,11 @@ std::string dns::CNameRecord::toString()
     oss << m_aname.toString();
     
     return oss.str();
+}
+
+// Parse RDATA of CName record
+// RDATA is the A name refered by the alias
+bool dns::CNameRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+{
+    return m_aname.fromBuffer(buf, size, offset);
 }

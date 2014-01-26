@@ -30,6 +30,7 @@
 // ***************************************************************************
 
 #include "Packet.h"
+#include "RRFactory.h"
 
 dns::Packet::Packet(bool bResponse)
 : m_header(bResponse)
@@ -160,7 +161,7 @@ bool dns::Packet::fromBuffer(unsigned char* buf, size_t size)
         // answers
         for (int i = 0; bRet && i < m_header.ancount(); ++i)
         {
-            dns::ResourceRecord* rr = dns::ResourceRecord::fromBuffer(buf, size, offset);
+            dns::ResourceRecord* rr = dns::RRFactory::fromBuffer(buf, size, offset);
             if (rr == NULL)
             {
                 std::cout << "Decode answer error, offset: " << offset << std::endl;
