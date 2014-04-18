@@ -25,8 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #ifndef DNS_RESOURCE_RECORD_H
@@ -35,30 +33,124 @@
 #include <dns/Config.h>
 #include <dns/Name.h>
 
-namespace dns 
-{
-    class ResourceRecord 
-    {
-    public:
-        ResourceRecord(unsigned short rtype, unsigned short rdlen = 0);
-        virtual ~ResourceRecord();
-        
-        bool fromBuffer(unsigned char* buf, size_t size, size_t& offset);
- 
-        virtual std::string toString();
-        
-        static unsigned short checkType(unsigned char* buf, size_t size, size_t offset);
-                        
-    protected:
-        Name m_name;
-        unsigned short m_type;
-        unsigned short m_class;
-        unsigned int m_ttl;
-        unsigned short m_rdlen;
+DNS_BEGIN
+	
+/*
+RFC 1035	Domain Implementation and Specification    November 1987
+4.1.3. Resource record format
 
-        // Pack and unpack RDATA, redefined by derived class
-        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
-    };
-}
+The answer, authority, and additional sections all share the same
+format: a variable number of resource records, where the number of
+records is specified in the corresponding count field in the header.
+Each resource record has the following format:
+                                    1  1  1  1  1  1
+      0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                                               |
+    /                                               /
+    /                      NAME                     /
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                      TYPE                     |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                     CLASS                     |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                      TTL                      |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                   RDLENGTH                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--|
+    /                     RDATA                     /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+
+where:
+
+NAME            a domain name to which this resource record pertains.
+
+TYPE            two octets containing one of the RR type codes.  This
+                field specifies the meaning of the data in the RDATA
+                field.
+
+CLASS           two octets which specify the class of the data in the
+                RDATA field.
+
+TTL             a 32 bit unsigned integer that specifies the time
+                interval (in seconds) that the resource record may be
+                cached before it should be discarded.  Zero values are
+                interpreted to mean that the RR can only be used for the
+                transaction in progress, and should not be cached.
+
+RDLENGTH        an unsigned 16 bit integer that specifies the length in
+                octets of the RDATA field.
+
+RDATA           a variable length string of octets that describes the
+                resource.  The format of this information varies
+                according to the TYPE and CLASS of the resource record.
+                For example, the if the TYPE is A and the CLASS is IN,
+                the RDATA field is a 4 octet ARPA Internet address.
+	
+*/
+/*
+3.2.2. TYPE values
+
+TYPE fields are used in resource records.  Note that these types are a
+subset of QTYPEs.
+
+A               1 a host address
+NS              2 an authoritative name server
+MD              3 a mail destination (Obsolete - use MX)
+MF              4 a mail forwarder (Obsolete - use MX)
+CNAME           5 the canonical name for an alias
+SOA             6 marks the start of a zone of authority
+MB              7 a mailbox domain name (EXPERIMENTAL)
+MG              8 a mail group member (EXPERIMENTAL)
+MR              9 a mail rename domain name (EXPERIMENTAL)
+NULL            10 a null RR (EXPERIMENTAL)
+WKS             11 a well known service description
+PTR             12 a domain name pointer
+HINFO           13 host information
+MINFO           14 mailbox or mail list information
+MX              15 mail exchange
+TXT             16 text strings
+*/
+	
+/*
+3.2.4. CLASS values
+
+CLASS fields appear in resource records.  The following CLASS mnemonics
+and values are defined:
+
+IN              1 the Internet
+CS              2 the CSNET class (Obsolete - used only for examples in
+                some obsolete RFCs)
+CH              3 the CHAOS class
+HS              4 Hesiod [Dyer 87]
+*/
+	
+class ResourceRecord 
+{
+public:
+    ResourceRecord(unsigned short rtype, unsigned short rdlen = 0);
+    virtual ~ResourceRecord();
+    
+    bool fromBuffer(char* buf, size_t size, size_t& offset);
+
+    virtual std::string toString();
+    
+    static unsigned short checkType(char* buf, size_t size, size_t offset);
+                    
+protected:
+    Name m_name;
+    unsigned short m_type;
+    unsigned short m_class;
+    unsigned int m_ttl;
+    unsigned short m_rdlen;
+
+    // Pack and unpack RDATA, redefined by derived class
+    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+};
+
+DNS_END
 
 #endif

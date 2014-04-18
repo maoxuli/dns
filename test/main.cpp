@@ -25,27 +25,25 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-// 
-// http://www.ppengine.com
-// support@ppengine.com
 //
 // ***************************************************************************
 
+#include <dns/Message.h>
 #include <dns/Resolver.h>
 #include <iostream>
 
 int main (int argc, const char * argv[])
 {
-    std::cout << "DNS test ... \n\n";
-    
+    std::cout <<
+    "DNS resolver, v0.1\r\n"
+    "Copyright 2010 LIM Labs.\r\n";
+
+    dns::Message response;
     dns::Resolver resolver;
+    resolver.resolve("limlabs.com", DNS_TYPE_A, response);
     
-    dns::Packet response(true);
-    resolver.query("www.ucdavis.edu", DNS_RR_CNAME, response);
     std::cout << response.toString();  
-    
-    std::cout << "\nDNS test end! \n";
-    //std::cout << "Press any key to exit...\n";
+
     //getchar();
     return 0;
 }

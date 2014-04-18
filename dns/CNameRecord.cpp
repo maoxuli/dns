@@ -25,14 +25,12 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "CNameRecord.h"
 
 dns::CNameRecord::CNameRecord()
-: ResourceRecord(DNS_RR_CNAME)
+: ResourceRecord(DNS_TYPE_CNAME)
 {
     
 }
@@ -57,7 +55,7 @@ std::string dns::CNameRecord::toString()
 
 // Parse RDATA of CName record
 // RDATA is the A name refered by the alias
-bool dns::CNameRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+bool dns::CNameRecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
 {
     return m_aname.fromBuffer(buf, size, offset);
 }

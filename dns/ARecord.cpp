@@ -25,14 +25,12 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "ARecord.h"
  
 dns::ARecord::ARecord()
-: ResourceRecord(DNS_RR_A)
+: ResourceRecord(DNS_TYPE_A)
 {
 
 }
@@ -60,7 +58,7 @@ std::string dns::ARecord::toString()
 
 // Parse RDATA of A record
 // RDATA is 4-bytes value of IPv4 address 
-bool dns::ARecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+bool dns::ARecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
 {
     if(size - offset >= 4)
     {

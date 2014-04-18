@@ -25,8 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "RRFactory.h"
@@ -36,33 +34,34 @@
 #include "TXTRecord.h"
 #include "MXRecord.h"
 
-namespace dns
+DNS_BEGIN
+	
+ResourceRecord* RRFactory::fromBuffer(char* buf, size_t size, size_t& offset)
 {
-    ResourceRecord* RRFactory::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
+    ResourceRecord* rr = NULL;
+    unsigned short rtype = ResourceRecord::checkType(buf, size, offset);
+    switch (rtype) 
     {
-        ResourceRecord* rr = NULL;
-        unsigned short rtype = ResourceRecord::checkType(buf, size, offset);
-        switch (rtype) 
-        {
-            case DNS_RR_A: // A record
-                rr = new ARecord();
-                break;
-            case DNS_RR_CNAME: // CNAME record
-                rr = new CNameRecord();
-                break;
-            case DNS_RR_TXT: // TXT value record
-                rr = new TXTRecord();
-                break;
-            case DNS_RR_MX: // MX record
-                rr = new MXRecord();
-                break;
-                
-            default:
-                rr = new ResourceRecord(rtype);
-                break;
-        }
-        assert(rr != NULL);
-        rr->fromBuffer(buf, size, offset);
-        return rr;
+        case DNS_TYPE_A: // A record
+            rr = new ARecord();
+            break;
+        case DNS_TYPE_CNAME: // CNAME record
+            rr = new CNameRecord();
+            break;
+        case DNS_TYPE_TXT: // TXT value record
+            rr = new TXTRecord();
+            break;
+        case DNS_TYPE_MX: // MX record
+            rr = new MXRecord();
+            break;
+            
+        default:
+            rr = new ResourceRecord(rtype);
+            break;
     }
+    assert(rr != NULL);
+    rr->fromBuffer(buf, size, offset);
+    return rr;
 }
+
+DNS_END

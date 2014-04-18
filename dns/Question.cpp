@@ -25,13 +25,11 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "Question.h"
 
-dns::Question::Question(std::string& qname, unsigned short qtype)
+dns::Question::Question(const std::string& qname, unsigned short qtype)
 : m_name(qname)
 , m_type(qtype)
 , m_class(DNS_CLASS_IN)
@@ -39,7 +37,7 @@ dns::Question::Question(std::string& qname, unsigned short qtype)
 
 }
 
-dns::Question::Question(dns::Name& qname, unsigned short qtype, unsigned short qclass)
+dns::Question::Question(const dns::Name& qname, unsigned short qtype, unsigned short qclass)
 : m_name(qname)
 , m_type(qtype)
 , m_class(qclass)
@@ -60,7 +58,7 @@ std::string dns::Question::toString()
     return oss.str();
 }
 
-int dns::Question::toBuffer(unsigned char *buf, size_t size)
+int dns::Question::toBuffer(char *buf, size_t size)
 {   
     int nLen = -1;
     
@@ -83,7 +81,7 @@ int dns::Question::toBuffer(unsigned char *buf, size_t size)
 }
 
 // From buffer
-dns::Question* dns::Question::fromBuffer(unsigned char* buf, size_t size, size_t &offset)
+dns::Question* dns::Question::fromBuffer(char* buf, size_t size, size_t &offset)
 {
     dns::Question* question = NULL;
     

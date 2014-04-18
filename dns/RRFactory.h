@@ -25,8 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #ifndef DNS_RR_FACTORY_H
@@ -34,15 +32,15 @@
 
 #include <dns/Config.h>
 #include <dns/ResourceRecord.h>
-#include <dns/Name.h>
 
-namespace  dns
+DNS_BEGIN
+	
+class RRFactory
 {
-    class RRFactory
-    {
-    public:
-        static ResourceRecord* fromBuffer(unsigned char* buf, size_t size, size_t& offset);
-    };
-}
+public:
+    static ResourceRecord* fromBuffer(char* buf, size_t size, size_t& offset);
+};
 
+DNS_END
+	
 #endif

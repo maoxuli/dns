@@ -25,75 +25,71 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "ResourceRecord.h"
-#include "RRFactory.h"
 
-namespace dns
+DNS_BEGIN
+	
+ResourceRecord::ResourceRecord(unsigned short rtype, unsigned short rdlen)
+: m_type(rtype)
+, m_class(0)
+, m_ttl(0)
+, m_rdlen(rdlen)
 {
-
-    ResourceRecord::ResourceRecord(unsigned short rtype, unsigned short rdlen)
-    : m_type(rtype)
-    , m_class(0)
-    , m_ttl(0)
-    , m_rdlen(rdlen)
-    {
-        
-    }
     
-    ResourceRecord::~ResourceRecord()
-    {
-        
-    }
-
-    std::string ResourceRecord::toString()
-    {
-        std::ostringstream oss;
-        oss << "RR: " << m_name.toString() << " " << m_type << " " << m_class << " " << m_ttl << " " << m_rdlen;
-        return oss.str();
-    }
-    
-    unsigned short ResourceRecord::checkType(unsigned char *buf, size_t size, size_t offset)
-    {
-        Name name;
-        name.fromBuffer(buf, size, offset);
-        return ntohs(*(uint16_t*)(buf + offset));
-    }
-    
-    // From buffer
-    bool ResourceRecord::fromBuffer(unsigned char* buf, size_t size, size_t &offset)
-    {
-        // Header 
-        if (m_name.fromBuffer(buf, size, offset))
-        {       
-            if (size - offset >= 10)
-            {
-                m_type = ntohs(*(uint16_t*)(buf + offset));
-                offset += 2;
-                m_class = ntohs(*(uint16_t*)(buf + offset));
-                offset += 2;
-                m_ttl = ntohl(*(uint32_t*)(buf + offset));
-                offset += 4;
-                m_rdlen = ntohs(*(uint16_t*)(buf + offset));
-                offset += 2;
-
-                return dataFromBuffer(buf, size, offset);
-            }
-        }
-        return false;
-    }
-
-    bool ResourceRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t &offset)
-    {
-        if(size - offset >= m_rdlen)
-        {
-            offset += m_rdlen;
-            return true;
-        }
-        return false;
-    }
-
 }
+
+ResourceRecord::~ResourceRecord()
+{
+    
+}
+
+std::string ResourceRecord::toString()
+{
+    std::ostringstream oss;
+    oss << "RR: " << m_name.toString() << " " << m_type << " " << m_class << " " << m_ttl << " " << m_rdlen;
+    return oss.str();
+}
+
+unsigned short ResourceRecord::checkType(char* buf, size_t size, size_t offset)
+{
+    Name name;
+    name.fromBuffer(buf, size, offset);
+    return ntohs(*(uint16_t*)(buf + offset));
+}
+
+// From buffer
+bool ResourceRecord::fromBuffer(char* buf, size_t size, size_t &offset)
+{
+    // Header 
+    if (m_name.fromBuffer(buf, size, offset))
+    {       
+        if (size - offset >= 10)
+        {
+            m_type = ntohs(*(uint16_t*)(buf + offset));
+            offset += 2;
+            m_class = ntohs(*(uint16_t*)(buf + offset));
+            offset += 2;
+            m_ttl = ntohl(*(uint32_t*)(buf + offset));
+            offset += 4;
+            m_rdlen = ntohs(*(uint16_t*)(buf + offset));
+            offset += 2;
+
+            return dataFromBuffer(buf, size, offset);
+        }
+    }
+    return false;
+}
+
+bool ResourceRecord::dataFromBuffer(char* buf, size_t size, size_t &offset)
+{
+    if(size - offset >= m_rdlen)
+    {
+        offset += m_rdlen;
+        return true;
+    }
+    return false;
+}
+
+DNS_END

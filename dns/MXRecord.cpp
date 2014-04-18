@@ -25,14 +25,12 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "MXRecord.h"
 
 dns::MXRecord::MXRecord()
-: ResourceRecord(DNS_RR_CNAME)
+: ResourceRecord(DNS_TYPE_CNAME)
 {
     
 }
@@ -50,22 +48,21 @@ std::string dns::MXRecord::toString()
     oss << dns::ResourceRecord::toString() << " ";
     
     // Priority
-    oss << m_priority << " ";
+    oss << m_preference << " ";
     
     // A name
-    oss << m_aname.toString();
+    oss << m_exchange.toString();
     
     return oss.str();
 }
 
-// Parse RDATA of CName record
-// RDATA is the A name refered by the alias
-bool dns::MXRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+// Parse RDATA of MX record
+bool dns::MXRecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
 {
     if(size - offset >= 2)
     {
-        m_priority = *(uint16_t*)(buf + offset); // ?
+        m_preference = ntohs(*(uint16_t*)(buf + offset));
         offset += 2;
     }
-    return m_aname.fromBuffer(buf, size, offset);
+    return m_exchange.fromBuffer(buf, size, offset);
 }

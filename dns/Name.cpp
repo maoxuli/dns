@@ -25,8 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "Name.h"
@@ -43,19 +41,19 @@ dns::Name::Name(const char* name)
 : m_length(0)
 {
     std::string sName(name);
-    init(sName);
+    parse(sName);
 }
 
-dns::Name::Name(std::string& name)
+dns::Name::Name(std::string name)
 : m_length(0)
 {
-    init(name);
+    parse(name);
 }
 
-dns::Name::Name(dns::Name* name)
+dns::Name::Name(const dns::Name* name)
 : m_length(name->m_length)
 {    
-    for (std::list<std::string>::iterator it = name->m_parts.begin(); it != name->m_parts.end(); ++it)
+    for (std::list<std::string>::const_iterator it = name->m_parts.begin(); it != name->m_parts.end(); ++it)
     {
         m_parts.push_back(std::string(*it));
     }
@@ -67,10 +65,8 @@ dns::Name::~Name()
 }
 
 // Parse a dot-divided name
-bool dns::Name::init(std::string& name)
+void dns::Name::parse(std::string& name)
 {
-    bool bRet = false;
-    
     try
     {
         //Validate the name first
@@ -110,19 +106,16 @@ bool dns::Name::init(std::string& name)
                 index = pos + 1;
             }
         }
-        bRet = true;
     }
     catch (...)
     {
         // Log error
     }
-    
-    return bRet;
 }
 
 // Decode domain name into a string lsit
 // and create a new Name instance
-bool dns::Name::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
+bool dns::Name::fromBuffer(char* buf, size_t size, size_t& offset)
 {
     return decode(buf, size, offset, m_parts, m_length);
 }
@@ -134,7 +127,7 @@ bool dns::Name::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
 // if two high bits are 11, then the rest 6 bits and the following one byte is a pointer 
 // value of pointer is the offset from header
 // 
-bool dns::Name::decode(unsigned char* buf, size_t size, size_t &offset,std::list<std::string>& parts, size_t &len)
+bool dns::Name::decode(char* buf, size_t size, size_t &offset,std::list<std::string>& parts, size_t &len)
 {
     bool bRet = true;
 
@@ -194,7 +187,7 @@ bool dns::Name::decode(unsigned char* buf, size_t size, size_t &offset,std::list
 
 // Encode domain name into a buffer
 // Multiple sections, character number followed by the characters in each section
-int dns::Name::toBuffer(unsigned char* buf, size_t size)
+int dns::Name::toBuffer(char* buf, size_t size)
 {
     int nLen = -1;
     

@@ -25,65 +25,74 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
-#ifndef DNS_PACKET_H
-#define DNS_PACKET_H
+#ifndef DNS_MESSAGE_H
+#define DNS_MESSAGE_H
 
 #include <dns/Config.h>
 #include <dns/Header.h>
 #include <dns/Question.h>
 #include <dns/ResourceRecord.h>
 
-namespace dns 
+DNS_BEGIN
+	 
+/*	
+4.1. Format
+
+All communications inside of the domain protocol are carried in a single
+format called a message.  The top level format of message is divided
+into 5 sections (some of which are empty in certain cases) shown below:
+
+    +---------------------+
+    |        Header       |
+    +---------------------+
+    |       Question      | the question for the name server
+    +---------------------+
+    |        Answer       | RRs answering the question
+    +---------------------+
+    |      Authority      | RRs pointing toward an authority
+    +---------------------+
+    |      Additional     | RRs holding additional information
+    +---------------------+	
+*/
+
+class Message 
 {
+public:
+    Message();
+	Message(const std::string& qname, unsigned short qtype);
+    virtual ~Message();
+	
+	// Add question to query message
+	void addQuestion(const std::string& qname, unsigned short qtype);
+
+    // Encode a request packet
+    int toBuffer(char* buf, size_t size);
     
-    //
-    // On top level, DNS defines a unified packet structure for
-    // request and response between client and server, and 
-    // between servers.
-    // A flag in header indicates a request or a response packet
-    // Following header, a request packet has a questions section
-    // while response packet has questions, answers, and other
-    // two sections. This implementation only process questions
-    // and answers section.
-    //
-    class Packet 
-    {
-    public:
-        Packet(bool bResponse);
-        virtual ~Packet();
-        
-        // Add a question to a request packet
-        bool addQuestion(dns::Question* question);
-        
-        // Encode a request packet
-        int toBuffer(unsigned char* buf, size_t size);
-        
-        // Decode a response packet
-        bool fromBuffer(unsigned char* buf, size_t size);
-        
-        // Access header and sections
-        inline dns::Header& header() {return m_header; };
-        inline std::list<dns::Question*>& questions() {return m_questions; };
-        inline std::list<dns::ResourceRecord*>& answers() {return m_answers; };
-        
-        std::string toString();
-        
-    private:
-        //Header
-        dns::Header m_header;
-        
-        //Questions
-        std::list<dns::Question*> m_questions;
-        
-        //Answers
-        std::list<dns::ResourceRecord*> m_answers;
-        
-        void clearList();
-    };
-}
+    // Decode a response packet
+    bool fromBuffer(char* buf, size_t size);
+    
+    // Access header and sections
+    inline dns::Header& header() {return m_header; };
+    inline std::list<dns::Question*>& questions() {return m_questions; };
+    inline std::list<dns::ResourceRecord*>& answers() {return m_answers; };
+    
+    std::string toString();
+    
+protected:
+    //Header
+    dns::Header m_header;
+    
+    //Questions
+    std::list<dns::Question*> m_questions;
+    
+    //Answers
+    std::list<dns::ResourceRecord*> m_answers;
+    
+    void clearList();
+};
+
+DNS_END
 
 #endif

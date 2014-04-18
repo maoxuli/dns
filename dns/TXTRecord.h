@@ -25,8 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #ifndef DNS_TXT_RECORD_H
@@ -35,22 +33,39 @@
 #include <dns/Config.h>
 #include <dns/ResourceRecord.h>
 
-namespace dns
+DNS_BEGIN
+	
+/*
+RFC 1035	Domain Implementation and Specification    November 1987
+3.3.14. TXT RDATA format
+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                   TXT-DATA                    /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+
+where:
+
+TXT-DATA        One or more <character-string>s.
+
+TXT RRs are used to hold descriptive text.  The semantics of the text
+depends on the domain where it is found.	
+*/
+
+class TXTRecord : public ResourceRecord 
 {
-    class TXTRecord : public ResourceRecord 
-    {
-    public:
-        TXTRecord();
-        virtual ~TXTRecord();
- 
-        virtual std::string toString();
-        
-    private:
-        // Text value of TEXT record
-        std::string m_text;
-        
-        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
-    };
-}
+public:
+    TXTRecord();
+    virtual ~TXTRecord();
+
+    virtual std::string toString();
+    
+private:
+    // Text value of TEXT record
+    std::string m_text;
+    
+    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+};
+
+DNS_END
 
 #endif

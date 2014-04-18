@@ -25,14 +25,12 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #include "TXTRecord.h"
 
 dns::TXTRecord::TXTRecord()
-: ResourceRecord(DNS_RR_TXT)
+: ResourceRecord(DNS_TYPE_TXT)
 {
     
 }
@@ -57,7 +55,7 @@ std::string dns::TXTRecord::toString()
 
 // Parse RDATA of TXT record
 // Text is a sequence of [count+characters]
-bool dns::TXTRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
+bool dns::TXTRecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
 {
     size_t start = offset;
     int count = 0;

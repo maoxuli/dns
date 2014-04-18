@@ -24,213 +24,82 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-// 
-// li@maoxuli.com
 //
 // ***************************************************************************
 
 #include "Resolver.h"
 
-#define DEFAULT_DNS_SERVER  "8.8.8.8"
-#define DEFAULT_RETRIES     10
-#define DNS_MAX_PACKET_SIZE 512
-
 dns::Resolver::Resolver()
-: m_server(DEFAULT_DNS_SERVER)
+: m_socket(DEFAULT_DNS_HOST, DEFAULT_DNS_PORT)
 {
-#if defined(_WIN32)
-    WORD version = MAKEWORD(1, 1);
-    WSADATA data;
-    if(WSAStartup(version, &data) != 0)
-    {
-        std::cout << "WSAStartup failed.\n";
-    }
-#endif
 
-    init();
 }
 
-dns::Resolver::Resolver(std::string& ip)
-: m_server(ip)
+dns::Resolver::Resolver(const char* host, unsigned short port)
+: m_socket(host, port)
 {
-#if defined(_WIN32)
-    WORD version = MAKEWORD(1, 1);
-    WSADATA data;
-    if(WSAStartup(version, &data) != 0)
-    {
-        std::cout << "WSAStartup failed.\n";
-    }
-#endif 
 
-    init();
 }
 
-dns::Resolver::Resolver(const char* ip)
-: m_server(ip)
+dns::Resolver::Resolver(const std::string& host, unsigned short port)
+: m_socket(host, port)
 {
-#if defined(_WIN32)
-    WORD version = MAKEWORD(1, 1);
-    WSADATA data;
-    if(WSAStartup(version, &data) != 0)
-    {
-        std::cout << "WSAStartup failed.\n";
-    }
-#endif 
 
-    init();
 }
 
 dns::Resolver::~Resolver()
 {
-#if defined(_WIN32)
-	closesocket(m_socket);
-	WSACleanup();
-#else
-    close(m_socket);
-#endif
+
 }
 
-bool dns::Resolver::init()
-{
-    m_retries = DEFAULT_RETRIES; 
-    
-    memset(&m_sin, 0, sizeof(m_sin));
-	m_sin.sin_family = AF_INET;
-	m_sin.sin_port = htons(53);
-	m_sin.sin_addr.s_addr = inet_addr(m_server.c_str());
-    
-    if(-1 == (m_socket = socket(AF_INET, SOCK_DGRAM, 0)))
-    {
-        //Log error
-    }
-    
-    return true;
-}
-
-bool dns::Resolver::query(const char* name, int type, dns::Packet& response)
+bool dns::Resolver::resolve(const char* name, unsigned short type, dns::Message& response)
 {
     std::string sName(name);
-    return query(sName, type, response);
+    return resolve(sName, type, response);
 }
 
 
-bool dns::Resolver::query(std::string& name, int type, dns::Packet& response)
-{   
-    //Question
-    Question* question = new Question(name, type);
-
-    //Request packet
-    dns::Packet request(false);
-    request.addQuestion(question);
-    
-    return query(request, response);
-}
-
-bool dns::Resolver::query(dns::Packet& request, dns::Packet& response)
+bool dns::Resolver::resolve(const std::string& name, unsigned short type, dns::Message& response)
 {
-    bool bRet = false;
+    // Request
+    dns::Message query(name, type);
+    return resolve(query, response);
+}
+
+bool dns::Resolver::resolve(dns::Message& query, dns::Message& response)
+{
+    // Output request packet for debug
+    //std::cout << query.toString() << std::endl;
     
-    // Buffer for request packet encoding
-    unsigned char buf[DNS_MAX_PACKET_SIZE];
-    size_t size = DNS_MAX_PACKET_SIZE;
-    
-    // Encoding, return packet data length
-    int len = request.toBuffer(buf, size);
-    
-    if (len <= 0)
+    // Buffer for request packet
+    char buf_out[MAX_DNS_PACKET_SIZE];
+    int size_out = query.toBuffer(buf_out, MAX_DNS_PACKET_SIZE);
+    if (size_out <= 0)
     {
-        std::cout << "Request packet encoding error, len: " << len << std::endl;
+        std::cout << "Query message encoding error." << std::endl;
+        return false;
     }
-    else
+
+    // Buffer for response packet
+    char buf_in[MAX_DNS_PACKET_SIZE];
+    size_t size_in = 0;
+    
+    // Retry to send until receive response packet
+    bool bRet = false;
+    for (int i = 0; i < DEFAULT_RETRY_TIMES; i++)
     {
-        //printf("Request packet, len: %d \n", len);
-        //printf("id: %x %x \n", buf[0], buf[1]);
-        //printf("flags: %x %x \n", buf[2], buf[3]);
-        //printf("qdcount: %x %x \n", buf[4], buf[5]);
-        //printf("ancount: %x %x \n", buf[6], buf[7]);
-        //printf("nscount: %x %x \n", buf[8], buf[9]);
-        //printf("arcount: %x %x \n", buf[10], buf[11]);
-        //printf("name: ... \n");
-        //printf("type: %x %x \n", buf[len-4], buf[len-3]);
-        //printf("class: %x %x \n", buf[len-2], buf[len-1]);
-                
-        // Receiving packet
-        struct sockaddr_in sin;
-        memset(&sin, 0, sizeof(sin));
-        socklen_t addr_len = sizeof(struct sockaddr);
-        
-        fd_set fds;
-        struct timeval timeout;
-        timeout.tv_sec = 5;
-        timeout.tv_usec = 0;
-        
-        unsigned char buf_in[DNS_MAX_PACKET_SIZE];
-        size_t size_in = DNS_MAX_PACKET_SIZE;
-        long len_in = 0;
-        
-        // Retry to send until receive response packet
-        bool bSend = true;
-        for (int i = 0; i < m_retries; i++)
+        if (m_socket.write(buf_out, size_out) <= 0)
         {
-            if (m_socket <= 0)
-            {
-                std::cout << "Invalid socket for request sending" << std::endl;
-                continue;
-            }
-            else if (bSend
-                     && sendto(m_socket, (char*)buf, len, 0, (struct sockaddr*)&m_sin, sizeof(m_sin)) <= 0)
-            {
-                std::cout << "Send request packet error" << std::endl;
-                continue;
-            }
-            else
-            {
-                bSend = true;
-                
-                // Select to receive packet
-                FD_ZERO(&fds);
-                FD_SET(m_socket, &fds);
-                
-                int rc = select(sizeof(fds)*8, &fds, NULL, NULL, &timeout);
-                
-                if (rc < 0 )
-                {
-                    std::cout << "Select to receive packet failed, stop query." << std::endl;
-                    break;
-                }
-                else if (FD_ISSET(m_socket, &fds))
-                {
-                    memset(buf_in, 0, size_in);
-                    len_in = recvfrom(m_socket, (char*)buf_in, size_in, 0, (struct sockaddr*)&sin, &addr_len);
-                    
-                    if (len_in <= 0)
-                    {
-                        std::cout << "Receive data failed, resend request" << std::endl;
-                    }
-                    else if (sin.sin_addr.s_addr != m_sin.sin_addr.s_addr)
-                    {
-                        std::cout << "Receive a wrong packet from different server, waiting for next..." << std::endl;                      
-                        i--;
-                        bSend = false;
-                    }
-                    else if (!response.fromBuffer(buf_in, len_in))
-                    {
-                        std::cout << "Decoding response packet error, resend request" << std::endl;
-                    }
-                    else if (response.header().id() != request.header().id())
-                    {
-                        std::cout << "Receive a wrong packet with different id, waiting for next..." << std::endl;                        
-                        i--;
-                        bSend = false;
-                    }
-                    else
-                    {
-                        std::cout << "Receive response packet successfully." << std::endl;
-                        bRet = true;
-                        break;
-                    }
-                }
-            }
+            std::cout << "Send query message error." << std::endl;
+            continue;
+        }
+        
+        size_in = m_socket.read(buf_in, MAX_DNS_PACKET_SIZE, DEFAULT_SOCKET_TIMEOUT);
+        if(size_in > 0 && response.fromBuffer(buf_in, size_in))
+        {
+            std::cout << "Receive response message successfully." << std::endl;
+            bRet = true;
+            break;
         }
     }
     

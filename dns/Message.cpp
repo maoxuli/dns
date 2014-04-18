@@ -25,25 +25,27 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
-#include "Packet.h"
+#include "Message.h"
 #include "RRFactory.h"
 
-dns::Packet::Packet(bool bResponse)
-: m_header(bResponse)
+dns::Message::Message()
 {
 
 }
 
-dns::Packet::~Packet()
+dns::Message::Message(const std::string& qname, unsigned short qtype)
+{
+	addQuestion(qname, qtype);
+}
+
+dns::Message::~Message()
 {
     
 }
 
-void dns::Packet::clearList()
+void dns::Message::clearList()
 {
     for(std::list<dns::Question*>::iterator it = m_questions.begin(); it != m_questions.end(); ++it)
     {
@@ -64,30 +66,21 @@ void dns::Packet::clearList()
     }
 }
 
-// Add a question to a request packet
-bool dns::Packet::addQuestion(dns::Question* question)
+void dns::Message::addQuestion(const std::string& qname, unsigned short qtype)
 {
-   if(header().qr())
-    {
-        return false;
-    }
-    
-    m_questions.push_back(question);
-    
-    m_header.qdinc();
-    
-    return true;
+	m_header.idset();
+	m_header.rdset(true);
+	
+	dns::Question* question = new dns::Question(qname, qtype);
+	m_questions.push_back(question);
+	m_header.qdinc();
 }
 
 // Encode a request packet
-int dns::Packet::toBuffer(unsigned char *buf, size_t size)
+int dns::Message::toBuffer(char *buf, size_t size)
 {
-    if(header().qr())
-    {
-        std::cout << "Can not encode a response packet" << std::endl;
-        return -1;
-    }
-    
+    assert(!header().qr());
+
     int nRet = -1;
     memset(buf, 0, size);
     
@@ -122,14 +115,8 @@ int dns::Packet::toBuffer(unsigned char *buf, size_t size)
 }
 
 // Decode a response packet
-bool dns::Packet::fromBuffer(unsigned char* buf, size_t size)
+bool dns::Message::fromBuffer(char* buf, size_t size)
 {
-    if(!header().qr())
-    {
-        std::cout << "Can not refill a request packet." << std::endl;
-        return false;
-    }
-    
     bool bRet = true;
     size_t offset = 0;
         
@@ -177,7 +164,7 @@ bool dns::Packet::fromBuffer(unsigned char* buf, size_t size)
     return bRet;
 }
 
-std::string dns::Packet::toString()
+std::string dns::Message::toString()
 {
     std::ostringstream oss;
     oss << m_header.toString() << std::endl;

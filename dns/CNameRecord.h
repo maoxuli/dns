@@ -25,8 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 // 
-// li@maoxuli.com
-//
 // ***************************************************************************
 
 #ifndef DNS_CNAME_RECORD_H
@@ -36,22 +34,38 @@
 #include <dns/ResourceRecord.h>
 #include <dns/Name.h>
 
-namespace dns
+DNS_BEGIN
+	
+/*
+RFC 1035	Domain Implementation and Specification    November 1987	
+3.3.1. CNAME RDATA format
+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                     CNAME                     /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+
+where:
+
+CNAME           A <domain-name> which specifies the canonical or primary
+                name for the owner.  The owner name is an alias.	
+*/
+	
+class CNameRecord : public ResourceRecord 
 {
-    class CNameRecord : public ResourceRecord 
-    {
-    public:
-        CNameRecord();
-        virtual ~CNameRecord();
-        
-        virtual std::string toString();
-        
-    private:
-        // RDATA is the A name refered by the alias
-        dns::Name m_aname;
-        
-        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
-    };
-}
+public:
+    CNameRecord();
+    virtual ~CNameRecord();
+    
+    virtual std::string toString();
+    
+private:
+    // RDATA is the A name refered by the alias
+    dns::Name m_aname;
+    
+    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+};
+
+DNS_END
 
 #endif

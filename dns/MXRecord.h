@@ -36,27 +36,49 @@
 #include <dns/ResourceRecord.h>
 #include <dns/Name.h>
 
-namespace dns
+DNS_BEGIN
+	
+/*
+RFC 1035	Domain Implementation and Specification    November 1987
+3.3.9. MX RDATA format
+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                  PREFERENCE                   |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    /                   EXCHANGE                    /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+
+where:
+
+PREFERENCE      A 16 bit integer which specifies the preference given to
+                this RR among others at the same owner.  Lower values
+                are preferred.
+
+EXCHANGE        A <domain-name> which specifies a host willing to act as
+                a mail exchange for the owner name.
+*/
+	
+class MXRecord : public ResourceRecord
 {
-    class MXRecord : public ResourceRecord
-    {
-    public:
-        MXRecord();
-        virtual ~MXRecord();
-        
-        // Parse RDATA of CName record
-        virtual std::string toString();
-        
-    private:
-        // RDATA
-        // 16 bits integer for preperence
-        unsigned short m_priority;
-        
-        // A name
-        Name m_aname;
-        
-        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
-    };
-}
+public:
+    MXRecord();
+    virtual ~MXRecord();
+    
+    // Parse RDATA of CName record
+    virtual std::string toString();
+    
+private:
+    // RDATA
+    // 16 bits integer for preperence
+    unsigned short m_preference;
+    
+    // A name
+    Name m_exchange;
+    
+    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+};
+
+DNS_END
 
 #endif

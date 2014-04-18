@@ -24,43 +24,39 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-// 
-// li@maoxuli.com
 //
 // ***************************************************************************
 
 #ifndef DNS_RESOLVER_H
 #define DNS_RESOLVER_H
 
-#include <dns/Config.h>
-#include <dns/Packet.h>
+#include <dns/Message.h>
+#include <dns/Network.h>
 
-namespace dns 
-{    
-    class Resolver
-    {        
-    public:
-        Resolver(); // Use default DNS server
-        Resolver(const char* server); // DNS server
-        Resolver(std::string& server); // DNS server
-        virtual ~Resolver();
-                        
-        bool query(const char* name, int type, dns::Packet& response);
-        bool query(std::string& name, int type, dns::Packet& response);
-        bool query(dns::Packet& request, dns::Packet& response);
-        
-    private:
-        // DNS server
-        std::string m_server;
-        
-        // Retry
-        int m_retries;
-        
-        // Socket
-        sockaddr_in m_sin;
-        int m_socket;
-        bool init();
-    };
-}
+#define DEFAULT_DNS_HOST    	"8.8.8.8"
+#define DEFAULT_DNS_PORT    	53
+#define DEFAULT_RETRY_TIMES 	10
+#define DEFAULT_SOCKET_TIMEOUT	200 // ms
+#define MAX_DNS_PACKET_SIZE 	512
+
+DNS_BEGIN
+	  
+class Resolver
+{        
+public:
+    Resolver(); // Use default DNS server
+    Resolver(const char* host, unsigned short port = DEFAULT_DNS_PORT); // DNS server
+    Resolver(const std::string& host, unsigned short port = DEFAULT_DNS_PORT); // DNS server
+    virtual ~Resolver();
+                    
+    bool resolve(const char* name, unsigned short type, Message& response);
+    bool resolve(const std::string& name, unsigned short type, Message& response);
+    bool resolve(Message& query, Message& response);
+    
+private:
+	network::UdpSocket m_socket;
+};
+
+DNS_END
 
 #endif

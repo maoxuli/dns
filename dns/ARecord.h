@@ -35,22 +35,39 @@
 #include <dns/Config.h>
 #include <dns/ResourceRecord.h>
 
-namespace dns
+DNS_BEGIN
+	
+/*
+RFC 1035	Domain Implementation and Specification    November 1987	
+3.4.1. A RDATA format
+
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    ADDRESS                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+
+where:
+
+ADDRESS         A 32 bit Internet address.
+
+Hosts that have multiple Internet addresses will have multiple A
+records.
+*/
+	
+class ARecord : public ResourceRecord
 {
-    class ARecord : public ResourceRecord
-    {
-    public:
-        ARecord();
-        virtual ~ARecord();
- 
-        virtual std::string toString();
-        
-    private:
-        // RDATA of A record is a IPv4 address
-        uint32_t m_ip;
-        
-        virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
-    };
-}
+public:
+    ARecord();
+    virtual ~ARecord();
+
+    virtual std::string toString();
+    
+private:
+    // RDATA of A record is a IPv4 address
+    uint32_t m_ip;
+    
+    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+};
+
+DNS_END
 
 #endif
