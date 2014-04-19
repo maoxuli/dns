@@ -36,7 +36,7 @@
 
 DNS_BEGIN
 	
-ResourceRecord* RRFactory::fromBuffer(char* buf, size_t size, size_t& offset)
+ResourceRecord* RRFactory::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
     ResourceRecord* rr = NULL;
     unsigned short rtype = ResourceRecord::checkType(buf, size, offset);

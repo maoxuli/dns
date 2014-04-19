@@ -82,8 +82,8 @@ public:
     
     std::string toString();
     
-    int toBuffer(char *buf, size_t size);
-    static Question* fromBuffer(char* buf, size_t size, size_t& offset);
+    int toBuffer(unsigned char *buf, size_t size);
+    static Question* fromBuffer(unsigned char* buf, size_t size, size_t& offset);
     
 private:
     dns::Name m_name;

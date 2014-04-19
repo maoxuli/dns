@@ -158,8 +158,8 @@ public:
     Header();
     virtual ~Header();
       
-    int toBuffer(char* buf, size_t size);
-    bool fromBuffer(char* buf, size_t size, size_t& offset);
+    int toBuffer(unsigned char* buf, size_t size);
+    bool fromBuffer(unsigned char* buf, size_t size, size_t& offset);
     std::string toString();
     
     // ID field

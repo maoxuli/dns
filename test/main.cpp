@@ -35,15 +35,38 @@
 int main (int argc, const char * argv[])
 {
     std::cout <<
-    "DNS resolver, v0.1\r\n"
-    "Copyright 2010 LIM Labs.\r\n";
-
+    "//\n"
+    "// DNS resolver, v0.1.1\n"
+    "// Copyright 2012 LIM Labs.\n"
+    "//\n"
+    "\n";
+    
+    if(argc < 2)
+    {
+        std::cout <<
+        "// Please input a domain name as agument.\n"
+        "// Usage: dns [domain name]\n";
+        return 0;
+    }
+    
+    std::string domain = argv[1];
+    
+    std::cout <<
+    "Resolve(" << domain << ")\n"
+    "{\n";
+    
     dns::Message response;
     dns::Resolver resolver;
-    resolver.resolve("limlabs.com", DNS_TYPE_A, response);
+    resolver.resolve(domain, DNS_TYPE_A, response);
+    std::cout << response.toString();
+    resolver.resolve(domain, DNS_TYPE_CNAME, response);
+    std::cout << response.toString();
+    resolver.resolve(domain, DNS_TYPE_MX, response);
+    std::cout << response.toString();
+    resolver.resolve(domain, DNS_TYPE_TXT, response);
+    std::cout << response.toString();
     
-    std::cout << response.toString();  
-
+    std::cout << "}\n";
     //getchar();
     return 0;
 }

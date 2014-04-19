@@ -63,7 +63,7 @@ private:
     // RDATA is the A name refered by the alias
     dns::Name m_aname;
     
-    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+    virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
 };
 
 DNS_END

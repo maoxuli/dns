@@ -63,7 +63,7 @@ private:
     // Text value of TEXT record
     std::string m_text;
     
-    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+    virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
 };
 
 DNS_END

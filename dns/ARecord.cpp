@@ -51,18 +51,18 @@ std::string dns::ARecord::toString()
     struct in_addr ia = {m_ip};
     std::string ip = inet_ntoa(ia);
     oss << ip;
-    //oss << ((m_ip >> 24) & 0xff) << "." << ((m_ip >> 16) & 0xff) << "." << ((m_ip >> 8) & 0xff) << "." << (m_ip & 0xff);
     
     return oss.str();
 }
 
 // Parse RDATA of A record
 // RDATA is 4-bytes value of IPv4 address 
-bool dns::ARecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
+bool dns::ARecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
     if(size - offset >= 4)
     {
         m_ip = ntohl(*(uint32_t *)(buf+offset));
+        offset += 4;
         return true;
     }
     return false;

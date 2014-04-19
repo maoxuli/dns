@@ -55,6 +55,7 @@ void dns::Message::clearList()
             delete p;
         }
     }
+    m_questions.clear();
     
     for(std::list<dns::ResourceRecord*>::iterator it = m_answers.begin(); it != m_answers.end(); ++it)
     {
@@ -64,6 +65,7 @@ void dns::Message::clearList()
             delete p;
         }
     }
+    m_answers.clear();
 }
 
 void dns::Message::addQuestion(const std::string& qname, unsigned short qtype)
@@ -77,7 +79,7 @@ void dns::Message::addQuestion(const std::string& qname, unsigned short qtype)
 }
 
 // Encode a request packet
-int dns::Message::toBuffer(char *buf, size_t size)
+int dns::Message::toBuffer(unsigned char *buf, size_t size)
 {
     assert(!header().qr());
 
@@ -107,6 +109,7 @@ int dns::Message::toBuffer(char *buf, size_t size)
             else
             {                
                 nRet += nLen;
+                buf += nLen;
             }
         }
     }
@@ -115,7 +118,7 @@ int dns::Message::toBuffer(char *buf, size_t size)
 }
 
 // Decode a response packet
-bool dns::Message::fromBuffer(char* buf, size_t size)
+bool dns::Message::fromBuffer(unsigned char* buf, size_t size)
 {
     bool bRet = true;
     size_t offset = 0;
@@ -159,6 +162,10 @@ bool dns::Message::fromBuffer(char* buf, size_t size)
                 m_answers.push_back(rr);
             }
         }
+        
+        // In this implementation, we did not parse sections of authority and additional
+        // so some data may be left in the buffer
+        //assert(offset == size);
     }
     
     return bRet;

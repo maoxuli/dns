@@ -134,11 +134,11 @@ public:
     ResourceRecord(unsigned short rtype, unsigned short rdlen = 0);
     virtual ~ResourceRecord();
     
-    bool fromBuffer(char* buf, size_t size, size_t& offset);
+    bool fromBuffer(unsigned char* buf, size_t size, size_t& offset);
 
     virtual std::string toString();
     
-    static unsigned short checkType(char* buf, size_t size, size_t offset);
+    static unsigned short checkType(unsigned char* buf, size_t size, size_t offset);
                     
 protected:
     Name m_name;
@@ -148,7 +148,7 @@ protected:
     unsigned short m_rdlen;
 
     // Pack and unpack RDATA, redefined by derived class
-    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+    virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
 };
 
 DNS_END

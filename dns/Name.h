@@ -76,10 +76,10 @@ public:
     virtual ~Name();
     
     // Encode into a buffer in sending packet
-    int toBuffer(char* buf, size_t size);
+    int toBuffer(unsigned char* buf, size_t size);
     
     // Decode from a buffer in received packet
-    bool fromBuffer(char* buf, size_t len, size_t& offset);
+    bool fromBuffer(unsigned char* buf, size_t len, size_t& offset);
     
     std::string toString();
     
@@ -95,7 +95,7 @@ private:
     void parse(std::string& name);
     
     // Decode a name from buffer, may be compressed
-    bool decode(char* buf, size_t size, size_t &offset,std::list<std::string>& parts, size_t &len);
+    bool decode(unsigned char* buf, size_t size, size_t &offset,std::list<std::string>& parts, size_t &len);
 };
 
 DNS_END

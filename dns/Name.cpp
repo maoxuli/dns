@@ -115,7 +115,7 @@ void dns::Name::parse(std::string& name)
 
 // Decode domain name into a string lsit
 // and create a new Name instance
-bool dns::Name::fromBuffer(char* buf, size_t size, size_t& offset)
+bool dns::Name::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
     return decode(buf, size, offset, m_parts, m_length);
 }
@@ -127,7 +127,7 @@ bool dns::Name::fromBuffer(char* buf, size_t size, size_t& offset)
 // if two high bits are 11, then the rest 6 bits and the following one byte is a pointer 
 // value of pointer is the offset from header
 // 
-bool dns::Name::decode(char* buf, size_t size, size_t &offset,std::list<std::string>& parts, size_t &len)
+bool dns::Name::decode(unsigned char* buf, size_t size, size_t &offset,std::list<std::string>& parts, size_t &len)
 {
     bool bRet = true;
 
@@ -187,7 +187,7 @@ bool dns::Name::decode(char* buf, size_t size, size_t &offset,std::list<std::str
 
 // Encode domain name into a buffer
 // Multiple sections, character number followed by the characters in each section
-int dns::Name::toBuffer(char* buf, size_t size)
+int dns::Name::toBuffer(unsigned char* buf, size_t size)
 {
     int nLen = -1;
     

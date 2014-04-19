@@ -69,10 +69,10 @@ bool dns::Resolver::resolve(const std::string& name, unsigned short type, dns::M
 bool dns::Resolver::resolve(dns::Message& query, dns::Message& response)
 {
     // Output request packet for debug
-    //std::cout << query.toString() << std::endl;
+    std::cout << query.toString();
     
     // Buffer for request packet
-    char buf_out[MAX_DNS_PACKET_SIZE];
+    unsigned char buf_out[MAX_DNS_PACKET_SIZE];
     int size_out = query.toBuffer(buf_out, MAX_DNS_PACKET_SIZE);
     if (size_out <= 0)
     {
@@ -81,7 +81,7 @@ bool dns::Resolver::resolve(dns::Message& query, dns::Message& response)
     }
 
     // Buffer for response packet
-    char buf_in[MAX_DNS_PACKET_SIZE];
+    unsigned char buf_in[MAX_DNS_PACKET_SIZE];
     size_t size_in = 0;
     
     // Retry to send until receive response packet
@@ -97,7 +97,7 @@ bool dns::Resolver::resolve(dns::Message& query, dns::Message& response)
         size_in = m_socket.read(buf_in, MAX_DNS_PACKET_SIZE, DEFAULT_SOCKET_TIMEOUT);
         if(size_in > 0 && response.fromBuffer(buf_in, size_in))
         {
-            std::cout << "Receive response message successfully." << std::endl;
+            //std::cout << "Receive response message successfully." << std::endl;
             bRet = true;
             break;
         }

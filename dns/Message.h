@@ -68,10 +68,10 @@ public:
 	void addQuestion(const std::string& qname, unsigned short qtype);
 
     // Encode a request packet
-    int toBuffer(char* buf, size_t size);
+    int toBuffer(unsigned char* buf, size_t size);
     
     // Decode a response packet
-    bool fromBuffer(char* buf, size_t size);
+    bool fromBuffer(unsigned char* buf, size_t size);
     
     // Access header and sections
     inline dns::Header& header() {return m_header; };

@@ -38,7 +38,7 @@ DNS_BEGIN
 class RRFactory
 {
 public:
-    static ResourceRecord* fromBuffer(char* buf, size_t size, size_t& offset);
+    static ResourceRecord* fromBuffer(unsigned char* buf, size_t size, size_t& offset);
 };
 
 DNS_END

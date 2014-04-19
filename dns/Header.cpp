@@ -28,6 +28,7 @@
 // ***************************************************************************
 
 #include "Header.h"
+#include <time.h>
 
 dns::Header::Header()
 : m_id(0)
@@ -37,6 +38,7 @@ dns::Header::Header()
 , m_arcount(0)
 {
     memset(&m_flags, 0, sizeof(m_flags));
+    srand(clock());
 }
 
 dns::Header::~Header()
@@ -53,13 +55,14 @@ unsigned short dns::Header::idset(unsigned short id /*= 0*/)
 	}
 	else if(m_id == 0)
     {
-        m_id = (unsigned short)(65535 * (rand() / (RAND_MAX + 1.0)));
+        m_id = rand() % (65535 + 1);
     }
     
     return m_id;
 }
 
-int dns::Header::toBuffer(char* buf, size_t size)
+// Note: the 16bits flag is not short int value, no endianess issue
+int dns::Header::toBuffer(unsigned char* buf, size_t size)
 {
     if (size >= HEADER_LENGTH)
     {
@@ -77,7 +80,8 @@ int dns::Header::toBuffer(char* buf, size_t size)
     return -1;
 }
 
-bool dns::Header::fromBuffer(char* buf, size_t size, size_t& offset)
+// Note: the 16bits flag is not short int value, no endianess issue
+bool dns::Header::fromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
     if((size - offset) < HEADER_LENGTH)
     {
@@ -104,7 +108,7 @@ std::string dns::Header::toString()
     std::ostringstream oss;
     if(m_flags.qr)
     {
-        oss << "Response ";
+        oss << "// Response ";
         switch (m_flags.rcode) 
         {
             case DNS_RESPONSE_NO_ERROR:
@@ -134,7 +138,7 @@ std::string dns::Header::toString()
     }
     else
     {
-        oss << "Request " << std::endl;;
+        oss << "// Request " << std::endl;;
     }
     
     oss << m_id << " " << m_qdcount << " " << m_ancount << " " << m_nscount << " " << m_arcount;

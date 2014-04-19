@@ -57,7 +57,7 @@ std::string dns::MXRecord::toString()
 }
 
 // Parse RDATA of MX record
-bool dns::MXRecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
+bool dns::MXRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
     if(size - offset >= 2)
     {

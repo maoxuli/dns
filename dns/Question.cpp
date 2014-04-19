@@ -58,7 +58,7 @@ std::string dns::Question::toString()
     return oss.str();
 }
 
-int dns::Question::toBuffer(char *buf, size_t size)
+int dns::Question::toBuffer(unsigned char *buf, size_t size)
 {   
     int nLen = -1;
     
@@ -81,7 +81,7 @@ int dns::Question::toBuffer(char *buf, size_t size)
 }
 
 // From buffer
-dns::Question* dns::Question::fromBuffer(char* buf, size_t size, size_t &offset)
+dns::Question* dns::Question::fromBuffer(unsigned char* buf, size_t size, size_t &offset)
 {
     dns::Question* question = NULL;
     

@@ -48,11 +48,11 @@ ResourceRecord::~ResourceRecord()
 std::string ResourceRecord::toString()
 {
     std::ostringstream oss;
-    oss << "RR: " << m_name.toString() << " " << m_type << " " << m_class << " " << m_ttl << " " << m_rdlen;
+    oss << "Resource Record: " << m_name.toString() << " " << m_type << " " << m_class << " " << m_ttl << " " << m_rdlen;
     return oss.str();
 }
 
-unsigned short ResourceRecord::checkType(char* buf, size_t size, size_t offset)
+unsigned short ResourceRecord::checkType(unsigned char* buf, size_t size, size_t offset)
 {
     Name name;
     name.fromBuffer(buf, size, offset);
@@ -60,7 +60,7 @@ unsigned short ResourceRecord::checkType(char* buf, size_t size, size_t offset)
 }
 
 // From buffer
-bool ResourceRecord::fromBuffer(char* buf, size_t size, size_t &offset)
+bool ResourceRecord::fromBuffer(unsigned char* buf, size_t size, size_t &offset)
 {
     // Header 
     if (m_name.fromBuffer(buf, size, offset))
@@ -82,7 +82,7 @@ bool ResourceRecord::fromBuffer(char* buf, size_t size, size_t &offset)
     return false;
 }
 
-bool ResourceRecord::dataFromBuffer(char* buf, size_t size, size_t &offset)
+bool ResourceRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t &offset)
 {
     if(size - offset >= m_rdlen)
     {

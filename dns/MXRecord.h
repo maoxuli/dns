@@ -76,7 +76,7 @@ private:
     // A name
     Name m_exchange;
     
-    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+    virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
 };
 
 DNS_END

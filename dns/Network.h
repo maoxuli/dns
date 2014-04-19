@@ -9,6 +9,7 @@
 #define NETWORK_H
 
 #include <string>
+#include <vector>
 
 #if defined(_WIN32)
 #   include <winsock2.h>
@@ -37,10 +38,24 @@ typedef int socklen_t;
 #   define INVALID_SOCKET	-1
 #endif
 
-#define NETWORK_BEGIN namespace network {
-#define NETWORK_END   }
+#define NETWORK_NAMESPACE
+
+#ifdef NETWORK_NAMESPACE
+#   define NETWORK_BEGIN namespace network {
+#   define NETWORK_END   }
+#else
+#   define NETWORK_BEGIN 
+#   define NETWORK_END
+#endif
 
 NETWORK_BEGIN
+
+bool startup();
+void cleanup();
+
+std::string addressToString(const struct sockaddr_in& sin);
+struct in_addr resolveHostName(const std::string& name);
+std::vector<struct in_addr> getLocalAddress();
 
 class UdpSocket
 {        
@@ -48,10 +63,16 @@ public:
     UdpSocket();
 	UdpSocket(const std::string& host, unsigned short port); // Remote address
 	virtual ~UdpSocket();
-	
-	long write(char* buf, int size);
-	long read(char* buf, int size);
-	long read(char* buf, int size, int timeout);
+    
+    sockaddr_in localAddress();
+    sockaddr_in remoteAddress();
+    
+    void setRemoteAddress(const std::string& host, unsigned short port);
+    void setRemoteAddress(const struct sockaddr_in& sin);
+    
+	ssize_t write(const unsigned char* buf, size_t size);
+	ssize_t read(unsigned char* buf, size_t size);
+	ssize_t read(unsigned char* buf, size_t size, int timeout);
 
 private:
 	SOCKET _socket;

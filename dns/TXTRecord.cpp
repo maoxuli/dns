@@ -55,7 +55,7 @@ std::string dns::TXTRecord::toString()
 
 // Parse RDATA of TXT record
 // Text is a sequence of [count+characters]
-bool dns::TXTRecord::dataFromBuffer(char* buf, size_t size, size_t& offset)
+bool dns::TXTRecord::dataFromBuffer(unsigned char* buf, size_t size, size_t& offset)
 {
     size_t start = offset;
     int count = 0;

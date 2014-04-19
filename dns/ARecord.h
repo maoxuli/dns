@@ -65,7 +65,7 @@ private:
     // RDATA of A record is a IPv4 address
     uint32_t m_ip;
     
-    virtual bool dataFromBuffer(char* buf, size_t size, size_t& offset);
+    virtual bool dataFromBuffer(unsigned char* buf, size_t size, size_t& offset);
 };
 
 DNS_END
