@@ -1,3 +1,9 @@
+This code has been deprecated with an alternative version 
+at links below:   
+
+NetB project: https://github.com/maoxuli/netb  
+DNS examples: https://github.com/maoxuli/netb/tree/master/examples/dns  
+
 Domain Name Service (DNS) is a fundamental part of Internet. 
 DNS server stores host addresses of a domain name, as well 
 as other kinds of informations. DNS resolver communicates 
@@ -12,4 +18,7 @@ Current implementation only parses the resource records with
 types of A, CNAME, and TXT, although other types of resource 
 records are also returned within response message. 
 
-li@maoxuli.com
+The code here is an experimental implementation according to 
+RFC 1035 as my class project at the George Washington University. 
+There are many issues in design and coding. Please refer to 
+abovementioned alternative version. 
